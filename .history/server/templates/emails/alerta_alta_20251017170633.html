@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * { margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5; }
+        .container { max-width: 600px; margin: 20px auto; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #e74c3c 0%, rgba(0,0,0,0.1) 100%); color: white; padding: 30px 20px; text-align: center; border-left: 5px solid #e74c3c; }
+        .logo { font-size: 32px; font-weight: bold; margin-bottom: 10px; }
+        .alert-badge { display: inline-block; background: rgba(255,255,255,0.3); padding: 8px 16px; border-radius: 20px; font-size: 14px; margin-top: 10px; }
+        .content { padding: 30px 20px; }
+        .alert-title { font-size: 22px; color: #e74c3c; margin-bottom: 15px; font-weight: 600; }
+        .alert-icon { font-size: 48px; margin-bottom: 15px; }
+        .message { color: #333; line-height: 1.6; margin-bottom: 20px; font-size: 16px; background-color: #f9f9f9; padding: 15px; border-left: 4px solid #e74c3c; border-radius: 4px; }
+        .action-required { background-color: #ffcccc; border: 2px solid #e74c3c; padding: 15px; border-radius: 4px; color: #333; margin: 20px 0; font-weight: 600; font-size: 14px; }
+        .footer { background-color: #f9f9f9; padding: 20px; text-align: center; font-size: 12px; color: #999; border-top: 1px solid #eee; }
+        .timestamp { color: #999; font-size: 12px; margin-top: 15px; }
+        .cta-button { display: inline-block; background: #e74c3c; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; margin: 20px 0; font-weight: 600; }
+        .cta-button:hover { background: #c0392b; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="alert-icon">🚨</div>
+            <div class="logo">CO-INGENIO</div>
+            <div class="alert-badge">ALERTA CRÍTICA</div>
+        </div>
+        <div class="content">
+            <p style="color: #666; margin-bottom: 15px;">Hola, <strong> Admin </strong></p>
+            <div class="alert-title">{{ titulo }}</div>
+            <div class="message">
+                {{ mensaje }}
+            </div>
+            <div class="action-required">
+                <strong>🚨 ACCIÓN URGENTE REQUERIDA:</strong><br>
+                Por favor, revisa esta alerta en tu dashboard INMEDIATAMENTE. Contáctanos si necesitas soporte de emergencia.
+            </div>
+            <a href="http://localhost:3000/dashboard" class="cta-button">Ver Detalles Urgentes</a>
+            <div class="timestamp">
+                Recibido: {{ timestamp }}
+            </div>
+        </div>
+        <div class="footer">
+            <p>&copy; 2025 CO-INGENIO. Todos los derechos reservados.</p>
+            <p>Este es un correo automático, por favor no respondas a este mensaje.</p>
+        </div>
+    </div>
+</body>
+</html>

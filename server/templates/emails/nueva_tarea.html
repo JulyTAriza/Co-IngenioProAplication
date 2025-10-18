@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * { margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5; }
+        .container { max-width: 600px; margin: 20px auto; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 40px 20px; text-align: center; }
+        .logo { font-size: 32px; font-weight: bold; margin-bottom: 10px; }
+        .content { padding: 40px 20px; }
+        .greeting { font-size: 24px; color: #333; margin-bottom: 20px; font-weight: 600; }
+        .message { color: #666; line-height: 1.6; margin-bottom: 20px; font-size: 16px; }
+        .cta-button { display: inline-block; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; margin: 20px 0; font-weight: 600; text-align: center; }
+        .footer { background-color: #f9f9f9; padding: 20px; text-align: center; font-size: 12px; color: #999; border-top: 1px solid #eee; }
+        .icon { font-size: 48px; margin-bottom: 15px; }
+        .subtitle { font-size: 14px; opacity: 0.9; margin-top: 10px; }
+        .info-box { background-color: #f8f9fa; border-left: 4px solid #4facfe; padding: 15px; margin: 20px 0; border-radius: 4px; }
+        .info-box strong { color: #333; display: block; margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="icon">📋</div>
+            <div class="logo">CO-INGENIO</div>
+            <p class="subtitle">Nueva tarea asignada</p>
+        </div>
+        <div class="content">
+            <div class="greeting">¡Hola, {{ username }}!</div>
+            <p class="message">
+                Se te ha asignado una nueva tarea en el proyecto <strong>{{ project_name }}</strong>.
+            </p>
+            <div class="info-box">
+                <strong>📌 Tarea:</strong> {{ task_name }}
+                <br><br>
+                <strong>📝 Descripción:</strong> {{ task_description }}
+                <br><br>
+                <strong>📅 Fecha de vencimiento:</strong> {{ due_date }}
+                <br><br>
+                <strong>⚡ Prioridad:</strong> {{ priority }}
+                <br><br>
+                <strong>👤 Asignado por:</strong> {{ assigned_by }}
+            </div>
+            <p class="message">
+                Por favor, revisa los detalles de la tarea y comienza a trabajar en ella lo antes posible.
+            </p>
+            <a href="{{ task_url }}" class="cta-button">Ver Tarea</a>
+            <p class="message" style="margin-top: 30px; font-style: italic; color: #888;">
+                Recuerda que puedes actualizar el estado de la tarea desde tu panel de control.
+            </p>
+        </div>
+        <div class="footer">
+            <p>&copy; 2025 CO-INGENIO. Todos los derechos reservados.</p>
+            <p>Este es un correo automático, por favor no respondas a este mensaje.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,467 @@
+from flask import Blueprint, request, jsonify
+from functools import wraps
+import jwt
+import traceback
+
+from database import get_db_connection
+import config
+
+my_tasks_bp = Blueprint("my_tasks", __name__)
+
+# ---------------------------
+# DECORADOR: TOKEN JWT
+# ---------------------------
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if request.method == 'OPTIONS':
+            response = jsonify({'status': 'preflight ok'})
+            return response, 200
+            
+        auth_header = request.headers.get("Authorization", "")
+        token = None
+        if auth_header.startswith("Bearer "):
+            token = auth_header.split(" ", 1)[1]
+
+        if not token:
+            return jsonify({"success": False, "message": "Token es requerido"}), 401
+
+        try:
+            payload = jwt.decode(token, config.SECRET_KEY, algorithms=["HS256"])
+            current_user = payload.get("username")
+        except jwt.ExpiredSignatureError:
+            return jsonify({"success": False, "message": "Token expirado"}), 401
+        except jwt.InvalidTokenError:
+            return jsonify({"success": False, "message": "Token inválido"}), 401
+
+        return f(current_user, *args, **kwargs)
+    return decorated
+
+
+# ---------------------------
+# GET MIS TAREAS (CON DEBUG)
+# ---------------------------
+@my_tasks_bp.route("/", methods=["GET", "OPTIONS"])
+@token_required
+def get_my_tasks(current_user):
+    """
+    Retorna las tareas asignadas al usuario logueado
+    """
+    if request.method == 'OPTIONS':
+        return jsonify({'status': 'preflight ok'}), 200
+    
+    try:
+        print(f"🔍 [MY-TASKS] Buscando tareas para usuario: {current_user}")
+        
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        
+        # 1️⃣ Obtener id del usuario desde username
+        cursor.execute("SELECT id FROM Usuarios WHERE username = ?", (current_user,))
+        user_row = cursor.fetchone()
+        
+        if not user_row:
+            conn.close()
+            print("❌ [MY-TASKS] Usuario no encontrado en la base de datos")
+            return jsonify(success=False, message="Usuario no encontrado"), 404
+        
+        id_usuario = user_row[0]
+        print(f"✅ [MY-TASKS] ID de usuario encontrado: {id_usuario}")
+        
+        # 2️⃣ Buscar personal_proyecto asociado a este usuario
+        cursor.execute("""
+            SELECT id_personal_proyecto, id_proyecto, rol
+            FROM personal_proyecto 
+            WHERE id_usuario = ?
+        """, (id_usuario,))
+        personal_rows = cursor.fetchall()
+        
+        if not personal_rows:
+            conn.close()
+            print(f"⚠️  [MY-TASKS] No se encontró personal_proyecto para el usuario ID: {id_usuario}")
+            print("💡 [MY-TASKS] Esto significa que el usuario no está asignado a ningún proyecto")
+            return jsonify(success=True, data={"pending": [], "completed": []}), 200
+        
+        print(f"✅ [MY-TASKS] Personal proyectos encontrados: {len(personal_rows)}")
+        for personal in personal_rows:
+            print(f"   - ID Personal: {personal[0]}, Proyecto: {personal[1]}, Rol: {personal[2]}")
+        
+        # 3️⃣ Obtener tareas asignadas a todos los personal_proyecto de este usuario
+        personal_ids = [personal[0] for personal in personal_rows]
+        placeholders = ','.join('?' for _ in personal_ids)
+        
+        cursor.execute(f"""
+            SELECT 
+                a.id_actividad,
+                a.nombre_actividad,
+                a.descripcion,
+                a.fecha_inicio,
+                a.fecha_fin,
+                a.estado,
+                p.nombre as nombre_proyecto,
+                p.id_proyecto,
+                e.nombre_etapa,
+                a.id_personal_proyecto
+            FROM actividades_cronograma a
+            INNER JOIN proyectos p ON a.id_proyecto = p.id_proyecto
+            INNER JOIN etapas_proyecto e ON a.id_etapa = e.id_etapa
+            WHERE a.id_personal_proyecto IN ({placeholders})
+            ORDER BY a.fecha_fin ASC
+        """, personal_ids)
+        
+        rows = cursor.fetchall()
+        conn.close()
+        
+        print(f"📊 [MY-TASKS] Tareas encontradas en BD: {len(rows)}")
+        
+        # Mostrar detalles de cada tarea encontrada
+        for i, r in enumerate(rows):
+            print(f"   Tarea {i+1}: ID={r[0]}, Nombre='{r[1]}', Estado='{r[5]}', Personal={r[9]}")
+        
+        # 4️⃣ Separar pendientes y completadas
+        pending = []
+        completed = []
+        
+        for r in rows:
+            task = {
+                "id": r[0],
+                "name": r[1],
+                "description": r[2],
+                "startDate": r[3].strftime('%Y-%m-%d') if r[3] else None,
+                "endDate": r[4].strftime('%Y-%m-%d') if r[4] else None,
+                "status": r[5],
+                "project": r[6],
+                "projectId": r[7],
+                "stage": r[8],
+                "personalId": r[9]  # Para debug
+            }
+            
+            if r[5] and r[5].lower() == 'completada':
+                completed.append(task)
+            else:
+                pending.append(task)
+        
+        print(f"✅ [MY-TASKS] Tareas procesadas - Pendientes: {len(pending)}, Completadas: {len(completed)}")
+        
+        return jsonify(success=True, data={
+            "pending": pending,
+            "completed": completed
+        }), 200
+
+    except Exception as e:
+        print(f"❌ [MY-TASKS] ERROR en get_my_tasks: {str(e)}")
+        print(traceback.format_exc())
+        return jsonify(success=False, message="Error interno del servidor"), 500
+
+
+# ---------------------------
+# COMPLETAR TAREA (CON DEBUG)
+# ---------------------------
+
+@my_tasks_bp.route("/<int:task_id>/complete", methods=["PUT", "OPTIONS"])
+@token_required
+def complete_task(current_user, task_id):
+    """
+    Marca una tarea como completada (solo el usuario asignado puede hacerlo)
+    """
+    if request.method == 'OPTIONS':
+        return jsonify({'status': 'preflight ok'}), 200
+    
+    try:
+        print(f"🔍 [COMPLETE-TASK] Usuario {current_user} intenta completar actividad {task_id}")
+        
+        # Debug de headers
+        auth_header = request.headers.get("Authorization", "")
+        print(f"📨 [COMPLETE-TASK] Header Authorization: {auth_header}")
+        print(f"📨 [COMPLETE-TASK] Método: {request.method}")
+        print(f"📨 [COMPLETE-TASK] Content-Type: {request.headers.get('Content-Type')}")
+        
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        
+        # 1️⃣ Verificar que el usuario existe
+        cursor.execute("SELECT id FROM Usuarios WHERE username = ?", (current_user,))
+        user_row = cursor.fetchone()
+        
+        if not user_row:
+            conn.close()
+            print("❌ [COMPLETE-TASK] Usuario no encontrado")
+            return jsonify(success=False, message="Usuario no encontrado"), 404
+        
+        id_usuario = user_row[0]
+        print(f"✅ [COMPLETE-TASK] ID usuario: {id_usuario}")
+        
+        # 2️⃣ Verificar que la tarea existe y obtener detalles
+        cursor.execute("""
+            SELECT 
+                a.id_actividad, 
+                a.nombre_actividad, 
+                a.estado,
+                a.id_personal_proyecto, 
+                pp.id_usuario,
+                pp.rol,
+                p.nombre as proyecto_nombre
+            FROM actividades_cronograma a
+            LEFT JOIN personal_proyecto pp ON a.id_personal_proyecto = pp.id_personal_proyecto
+            LEFT JOIN proyectos p ON a.id_proyecto = p.id_proyecto
+            WHERE a.id_actividad = ?
+        """, (task_id,))
+        
+        task = cursor.fetchone()
+        
+        if not task:
+            conn.close()
+            print(f"❌ [COMPLETE-TASK] Tarea {task_id} no encontrada en la base de datos")
+            return jsonify(success=False, message="Tarea no encontrada"), 404
+        
+        print(f"📝 [COMPLETE-TASK] Tarea encontrada:")
+        print(f"   - ID: {task[0]}")
+        print(f"   - Nombre: '{task[1]}'")
+        print(f"   - Estado actual: '{task[2]}'")
+        print(f"   - ID Personal: {task[3]}")
+        print(f"   - Usuario asignado: {task[4]}")
+        print(f"   - Rol: {task[5]}")
+        print(f"   - Proyecto: '{task[6]}'")
+        
+        # 3️⃣ Verificar que la tarea está asignada a este usuario
+        if task[4] != id_usuario:
+            conn.close()
+            print(f"🚫 [COMPLETE-TASK] Permiso denegado:")
+            print(f"   - Usuario de la tarea: {task[4]}")
+            print(f"   - Usuario actual: {id_usuario}")
+            return jsonify(success=False, message="No tienes permiso para completar esta tarea"), 403
+        
+        # 4️⃣ Verificar que la tarea no esté ya completada
+        if task[2] and task[2].lower() == 'completada':
+            conn.close()
+            print(f"⚠️  [COMPLETE-TASK] La tarea ya está completada")
+            return jsonify(success=False, message="La tarea ya está completada"), 400
+        
+        # 5️⃣ Actualizar estado a "Completada"
+        print(f"🔄 [COMPLETE-TASK] Actualizando estado a 'Completada'...")
+        cursor.execute("""
+            UPDATE actividades_cronograma
+            SET estado = 'Completada'
+            WHERE id_actividad = ?
+        """, (task_id,))
+        
+        rows_affected = cursor.rowcount
+        print(f"📊 [COMPLETE-TASK] Filas afectadas por UPDATE: {rows_affected}")
+        
+        conn.commit()
+        
+        # 6️⃣ Verificar que se actualizó correctamente
+        cursor.execute("SELECT estado FROM actividades_cronograma WHERE id_actividad = ?", (task_id,))
+        updated_task = cursor.fetchone()
+        
+        conn.close()
+        
+        if updated_task and updated_task[0] == 'Completada':
+            print(f"✅ [COMPLETE-TASK] Tarea {task_id} completada exitosamente por {current_user}")
+            print(f"✅ [COMPLETE-TASK] Estado confirmado: '{updated_task[0]}'")
+            return jsonify(success=True, message="Tarea completada correctamente"), 200
+        else:
+            print(f"❌ [COMPLETE-TASK] ERROR: La tarea no se actualizó correctamente")
+            return jsonify(success=False, message="Error al actualizar la tarea"), 500
+
+    except Exception as e:
+        print(f"❌ [COMPLETE-TASK] ERROR completando tarea: {str(e)}")
+        print(f"🔍 [COMPLETE-TASK] Tipo de error: {type(e).__name__}")
+        print(traceback.format_exc())
+        return jsonify(success=False, message="Error interno del servidor"), 500
+
+# ---------------------------
+# REABRIR TAREA (CON DEBUG)
+# ---------------------------
+@my_tasks_bp.route("/<int:task_id>/reopen", methods=["PUT", "OPTIONS"])
+@token_required
+def reopen_task(current_user, task_id):
+    """
+    Reabre una tarea completada (cambia estado a Pendiente)
+    """
+    if request.method == 'OPTIONS':
+        return jsonify({'status': 'preflight ok'}), 200
+    
+    try:
+        print(f"🔍 [REOPEN-TASK] Usuario {current_user} intenta reabrir actividad {task_id}")
+        
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        
+        # Verificar permisos
+        cursor.execute("SELECT id FROM Usuarios WHERE username = ?", (current_user,))
+        user_row = cursor.fetchone()
+        
+        if not user_row:
+            conn.close()
+            print("❌ [REOPEN-TASK] Usuario no encontrado")
+            return jsonify(success=False, message="Usuario no encontrado"), 404
+        
+        id_usuario = user_row[0]
+        
+        cursor.execute("""
+            SELECT a.id_actividad, a.nombre_actividad, pp.id_usuario
+            FROM actividades_cronograma a
+            LEFT JOIN personal_proyecto pp ON a.id_personal_proyecto = pp.id_personal_proyecto
+            WHERE a.id_actividad = ?
+        """, (task_id,))
+        
+        task = cursor.fetchone()
+        
+        if not task:
+            conn.close()
+            print(f"❌ [REOPEN-TASK] Tarea {task_id} no encontrada")
+            return jsonify(success=False, message="Tarea no encontrada"), 404
+        
+        print(f"📝 [REOPEN-TASK] Tarea encontrada: ID={task[0]}, Nombre='{task[1]}', UsuarioAsignado={task[2]}")
+        
+        if task[2] != id_usuario:
+            conn.close()
+            print(f"🚫 [REOPEN-TASK] Permiso denegado")
+            return jsonify(success=False, message="No tienes permiso"), 403
+        
+        # Actualizar estado
+        cursor.execute("""
+            UPDATE actividades_cronograma
+            SET estado = 'Pendiente'
+            WHERE id_actividad = ?
+        """, (task_id,))
+        
+        conn.commit()
+        conn.close()
+        
+        print(f"✅ [REOPEN-TASK] Tarea {task_id} reabierta por {current_user}")
+        
+        return jsonify(success=True, message="Tarea reabierta correctamente"), 200
+
+    except Exception as e:
+        print(f"❌ [REOPEN-TASK] ERROR reabriendo tarea: {str(e)}")
+        return jsonify(success=False, message="Error interno del servidor"), 500
+
+
+# ---------------------------
+# DIAGNÓSTICO COMPLETO
+# ---------------------------
+@my_tasks_bp.route("/debug", methods=["GET", "OPTIONS"])
+@token_required
+def debug_my_tasks(current_user):
+    """
+    Endpoint temporal para diagnosticar por qué no aparecen las tareas
+    """
+    if request.method == 'OPTIONS':
+        return jsonify({'status': 'preflight ok'}), 200
+    
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        
+        print(f"🔧 [DEBUG] Diagnóstico completo para usuario: {current_user}")
+        
+        # 1. Verificar que el usuario existe
+        cursor.execute("SELECT id, username, rol FROM Usuarios WHERE username = ?", (current_user,))
+        user = cursor.fetchone()
+        
+        if not user:
+            conn.close()
+            return jsonify({"success": False, "error": "Usuario no encontrado"}), 404
+        
+        user_id, username, user_role = user
+        print(f"👤 [DEBUG] Usuario en BD: ID={user_id}, Username={username}, Rol={user_role}")
+        
+        # 2. Verificar personal_proyecto
+        cursor.execute("""
+            SELECT pp.id_personal_proyecto, pp.id_proyecto, pp.rol, p.nombre as proyecto_nombre
+            FROM personal_proyecto pp
+            LEFT JOIN proyectos p ON pp.id_proyecto = p.id_proyecto
+            WHERE pp.id_usuario = ?
+        """, (user_id,))
+        personal_data = cursor.fetchall()
+        
+        print(f"👥 [DEBUG] Personal proyectos encontrados: {len(personal_data)}")
+        personal_ids = []
+        for p in personal_data:
+            print(f"   - ID Personal: {p[0]}, Proyecto ID: {p[1]}, Proyecto Nombre: {p[3]}, Rol: {p[2]}")
+            personal_ids.append(p[0])
+        
+        # 3. Verificar actividades_cronograma
+        actividades_data = []
+        if personal_ids:
+            placeholders = ','.join('?' for _ in personal_ids)
+            
+            cursor.execute(f"""
+                SELECT 
+                    a.id_actividad, 
+                    a.nombre_actividad, 
+                    a.estado, 
+                    a.id_personal_proyecto,
+                    a.fecha_inicio,
+                    a.fecha_fin,
+                    p.nombre as proyecto_nombre,
+                    e.nombre_etapa
+                FROM actividades_cronograma a
+                LEFT JOIN proyectos p ON a.id_proyecto = p.id_proyecto
+                LEFT JOIN etapas_proyecto e ON a.id_etapa = e.id_etapa
+                WHERE a.id_personal_proyecto IN ({placeholders})
+                ORDER BY a.fecha_fin ASC
+            """, personal_ids)
+            
+            actividades_data = cursor.fetchall()
+        
+        print(f"📝 [DEBUG] Actividades encontradas: {len(actividades_data)}")
+        for a in actividades_data:
+            print(f"   - ID: {a[0]}, Nombre: '{a[1]}', Estado: '{a[2]}', Personal: {a[3]}, Proyecto: '{a[6]}', Etapa: '{a[7]}'")
+        
+        # 4. Verificar todos los proyectos existentes (para referencia)
+        cursor.execute("SELECT id_proyecto, nombre, estado FROM proyectos")
+        proyectos_data = cursor.fetchall()
+        
+        print(f"🏗️  [DEBUG] Proyectos totales en sistema: {len(proyectos_data)}")
+        for p in proyectos_data:
+            print(f"   - ID: {p[0]}, Nombre: '{p[1]}', Estado: '{p[2]}'")
+        
+        conn.close()
+        
+        # Preparar respuesta detallada
+        response_data = {
+            "success": True,
+            "user": {
+                "id": user_id,
+                "username": username,
+                "role": user_role
+            },
+            "personal_projects": [
+                {
+                    "id_personal": p[0],
+                    "id_proyecto": p[1],
+                    "rol": p[2],
+                    "proyecto_nombre": p[3]
+                } for p in personal_data
+            ],
+            "activities": [
+                {
+                    "id_actividad": a[0],
+                    "nombre_actividad": a[1],
+                    "estado": a[2],
+                    "id_personal_proyecto": a[3],
+                    "fecha_inicio": a[4].strftime('%Y-%m-%d') if a[4] else None,
+                    "fecha_fin": a[5].strftime('%Y-%m-%d') if a[5] else None,
+                    "proyecto_nombre": a[6],
+                    "etapa": a[7]
+                } for a in actividades_data
+            ],
+            "summary": {
+                "personal_projects_count": len(personal_data),
+                "activities_count": len(actividades_data),
+                "pending_activities": len([a for a in actividades_data if a[2] != 'Completada']),
+                "completed_activities": len([a for a in actividades_data if a[2] == 'Completada'])
+            }
+        }
+        
+        print(f"✅ [DEBUG] Diagnóstico completado")
+        
+        return jsonify(response_data), 200
+        
+    except Exception as e:
+        print(f"❌ [DEBUG] ERROR en diagnóstico: {str(e)}")
+        print(traceback.format_exc())
+        return jsonify({"success": False, "error": str(e)}), 500

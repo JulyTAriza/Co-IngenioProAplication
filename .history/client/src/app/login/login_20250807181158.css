@@ -1,0 +1,129 @@
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #020132 0%, #1A202C 100%);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.login-card {
+  display: flex;
+  width: 900px;
+  height: 520px;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0px 6px 25px rgba(0, 0, 0, 0.2);
+}
+
+.login-left {
+  flex: 1;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+.logo {
+  max-width: 80%;
+  height: auto;
+}
+
+.welcome-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #111827;
+  margin-bottom: 10px; /* más espacio con el subtítulo */
+}
+
+.welcome-subtitle {
+  font-size: 16px;
+  margin-bottom: 25px;
+  color: #4b5563;
+}
+
+.login-right {
+  flex: 1;
+  background: linear-gradient(135deg, rgba(98, 133, 230, 0.85) 0%, rgba(23, 94, 248, 0.85) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.welcome-subtitle span {
+  color: #2563eb;
+  font-weight: bold;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.input-group {
+  position: relative;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px 12px 12px 40px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background-color: #f9fafb;
+  font-size: 14px;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #2563eb;
+  background-color: white;
+}
+
+.input-icon {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: #94a3b8;
+}
+
+.submit-button {
+  background-color: #0343ce;
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #1d4ed8;
+}
+
+.links {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.links a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.links a:hover {
+  text-decoration: underline;
+}
+
+.error-message {
+  color: #ef4444;
+  margin-bottom: 10px;
+  font-size: 14px;
+}

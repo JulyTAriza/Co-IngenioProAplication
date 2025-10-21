@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body { 
+            font-family: 'Arial', sans-serif; 
+            line-height: 1.6; 
+            color: #333; 
+            margin: 0; 
+            padding: 0; 
+            background-color: #f9fafb;
+        }
+        .container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header { 
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white; 
+            padding: 30px 20px; 
+            text-align: center; 
+        }
+        .content { 
+            padding: 30px; 
+            background: white;
+        }
+        .code-container {
+            background: #f8fafc;
+            border: 2px dashed #3b82f6;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin: 25px 0;
+        }
+        .verification-code {
+            font-size: 42px;
+            font-weight: bold;
+            color: #1e40af;
+            letter-spacing: 8px;
+            font-family: 'Courier New', monospace;
+        }
+        .button { 
+            background: #3b82f6; 
+            color: white; 
+            padding: 14px 28px; 
+            text-decoration: none; 
+            border-radius: 8px; 
+            display: inline-block;
+            font-weight: 600;
+            margin: 10px 0;
+        }
+        .warning { 
+            background: #fef3c7; 
+            border-left: 4px solid #f59e0b; 
+            padding: 16px; 
+            margin: 20px 0; 
+            border-radius: 4px;
+        }
+        .footer { 
+            text-align: center; 
+            padding: 20px; 
+            color: #6b7280; 
+            font-size: 14px;
+            background: #f8fafc;
+            border-top: 1px solid #e5e7eb;
+        }
+        .logo { 
+            font-size: 24px; 
+            font-weight: bold; 
+            margin-bottom: 10px; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">Co-IngenioPro</div>
+            <h1>🔐 Código de Verificación</h1>
+            <p>Para completar el proceso de recuperación de contraseña</p>
+        </div>
+        
+        <div class="content">
+            <p>Hola <strong>{{ username }}</strong>,</p>
+            
+            <p>Has solicitado restablecer tu contraseña en <strong>Co-IngenioPro</strong>. 
+            Utiliza el siguiente código de verificación para continuar:</p>
+            
+            <div class="code-container">
+                <div class="verification-code">{{ codigo }}</div>
+            </div>
+            
+            <div class="warning">
+                <p><strong>⚠️ Importante:</strong></p>
+                <ul>
+                    <li>Este código expirará en <strong>5 minutos</strong></li>
+                    <li>Solo tienes <strong>3 intentos</strong> para ingresarlo correctamente</li>
+                    <li>Si no solicitaste este cambio, ignora este mensaje</li>
+                </ul>
+            </div>
+            
+            <p>Si tienes problemas con el código, puedes solicitar uno nuevo desde la aplicación.</p>
+            
+            <p style="color: #6b7280; font-size: 14px; margin-top: 30px;">
+                ¿Necesitas ayuda? Contacta al administrador del sistema.
+            </p>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; 2025 Co-IngenioPro. Todos los derechos reservados.</p>
+            <p>Este es un mensaje automático, por favor no respondas a este correo.</p>
+        </div>
+    </div>
+</body>
+</html>

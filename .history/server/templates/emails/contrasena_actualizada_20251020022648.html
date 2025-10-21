@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body { 
+            font-family: 'Arial', sans-serif; 
+            line-height: 1.6; 
+            color: #333; 
+            margin: 0; 
+            padding: 0; 
+            background-color: #f9fafb;
+        }
+        .container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header { 
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white; 
+            padding: 30px 20px; 
+            text-align: center; 
+        }
+        .content { 
+            padding: 30px; 
+            background: white;
+        }
+        .success-box {
+            background: #ecfdf5;
+            border: 2px solid #10b981;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .checkmark {
+            font-size: 48px;
+            color: #10b981;
+            margin-bottom: 15px;
+        }
+        .next-steps {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .footer { 
+            text-align: center; 
+            padding: 20px; 
+            color: #6b7280; 
+            font-size: 14px;
+            background: #f8fafc;
+            border-top: 1px solid #e5e7eb;
+        }
+        .logo { 
+            font-size: 24px; 
+            font-weight: bold; 
+            margin-bottom: 10px; 
+        }
+        .security-tips {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">Co-IngenioPro</div>
+            <h1>✅ Contraseña Actualizada</h1>
+            <p>Tu seguridad es nuestra prioridad</p>
+        </div>
+        
+        <div class="content">
+            <div class="success-box">
+                <div class="checkmark">✓</div>
+                <h2 style="color: #059669; margin-top: 0;">¡Contraseña Cambiada Exitosamente!</h2>
+                <p>Hola <strong>{{ username }}</strong>, tu contraseña ha sido actualizada correctamente.</p>
+            </div>
+            
+            <p>El cambio de contraseña se realizó con éxito. Ahora puedes acceder a tu cuenta con tu nueva contraseña.</p>
+            
+            <div class="next-steps">
+                <h3 style="color: #0369a1; margin-top: 0;">📝 Próximos Pasos</h3>
+                <ol>
+                    <li><strong>Inicia sesión</strong> en Co-IngenioPro con tu nueva contraseña</li>
+                    <li><strong>Verifica</strong> que puedes acceder a todas las funcionalidades</li>
+                    <li><strong>Actualiza</strong> tu contraseña en cualquier aplicación conectada</li>
+                </ol>
+                
+                <p style="text-align: center; margin-top: 20px;">
+                    <a href="{{http://localhost:3000/login }}" style="background: #3b82f6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: 600;">
+                        🚀 Ir a Co-IngenioPro
+                    </a>
+                </p>
+            </div>
+            
+            <div class="security-tips">
+                <h3 style="color: #d97706; margin-top: 0;">🔒 Consejos de Seguridad</h3>
+                <ul>
+                    <li>🛡️ <strong>No compartas</strong> tu contraseña con nadie</li>
+                    <li>🔐 Usa una <strong>contraseña única</strong> que no utilices en otros servicios</li>
+                    <li>📱 Considera usar un <strong>gestor de contraseñas</strong></li>
+                    <li>🔄 <strong>Cambia regularmente</strong> tu contraseña</li>
+                    <li>👀 <strong>Mantente alerta</strong> a actividades sospechosas</li>
+                </ul>
+            </div>
+            
+            <div style="background: #f8fafc; padding: 15px; border-radius: 6px; margin: 20px 0;">
+                <h4 style="color: #6b7280; margin-top: 0;">¿Necesitas ayuda?</h4>
+                <p>Si tienes problemas para acceder o notas actividad sospechosa, contacta inmediatamente al administrador:</p>
+                <p><strong>📧 Email:</strong> soporte@co-ingeniopro.com</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; 2025 Co-IngenioPro. Todos los derechos reservados.</p>
+            <p>Este es un mensaje automático de confirmación.</p>
+        </div>
+    </div>
+</body>
+</html>

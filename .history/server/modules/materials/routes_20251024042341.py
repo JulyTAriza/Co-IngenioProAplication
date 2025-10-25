@@ -1,0 +1,361 @@
+from flask import Blueprint, request, jsonify, current_app
+from functools import wraps
+import jwt
+import traceback
+
+from database import get_db_connection
+import config
+
+materials_bp = Blueprint("materials", __name__)
+
+# ---------------------------
+# DECORADORES: TOKEN JWT + ROLES
+# ---------------------------
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth_header = request.headers.get("Authorization", "")
+        token = None
+        if auth_header.startswith("Bearer "):
+            token = auth_header.split(" ", 1)[1]
+
+        if not token:
+            return jsonify({"success": False, "message": "Token es requerido"}), 401
+
+        try:
+            payload = jwt.decode(token, config.SECRET_KEY, algorithms=["HS256"])
+            current_user = payload.get("username")
+        except jwt.ExpiredSignatureError:
+            return jsonify({"success": False, "message": "Token expirado"}), 401
+        except jwt.InvalidTokenError:
+            return jsonify({"success": False, "message": "Token inválido"}), 401
+
+        return f(current_user, *args, **kwargs)
+    return decorated
+
+def role_required(roles_permitidos):
+    def decorator(f):
+        @wraps(f)
+        def decorated(current_user, *args, **kwargs):
+            try:
+                conn = get_db_connection()
+                cursor = conn.cursor()
+                
+                cursor.execute("SELECT rol FROM usuarios WHERE username = ?", (current_user,))
+                usuario = cursor.fetchone()
+                conn.close()
+                
+                if not usuario:
+                    return jsonify({'success': False, 'message': 'Usuario no encontrado'}), 404
+                
+                rol_usuario = usuario[0]
+                
+                if rol_usuario not in roles_permitidos:
+                    return jsonify({
+                        'success': False, 
+                        'message': f'Acceso denegado. Se requiere uno de estos roles: {", ".join(roles_permitidos)}. Tu rol actual: {rol_usuario}'
+                    }), 403
+                
+                return f(current_user, *args, **kwargs)
+                
+            except Exception as e:
+                print(f"❌ ERROR en role_required: {str(e)}")
+                return jsonify({'success': False, 'message': 'Error verificando permisos'}), 500
+                
+        return decorated
+    return decorator
+
+
+# ---------------------------
+# RUTAS DE MATERIALES - SOLO ADMIN
+# ---------------------------
+
+@materials_bp.route("/", methods=["GET"])
+@token_required
+@role_required(['Administrador'])
+def list_materials(current_user):
+    """
+    Listar todos los materiales - SOLO ADMINISTRADORES
+    """
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT id, nombre, descripcion, cantidad, precio_unitario
+            FROM Materiales
+        """)
+        rows = cursor.fetchall()
+        conn.close()
+
+        materiales = [
+            {
+                "id": row[0],
+                "nombre": row[1],
+                "descripcion": row[2],
+                "cantidad": row[3],
+                "precio_unitario": float(row[4]) if row[4] is not None else None
+            }
+            for row in rows
+        ]
+        return jsonify(success=True, data=materiales), 200
+
+    except Exception:
+        current_app.logger.error("Error listando materiales:\n%s", traceback.format_exc())
+        return jsonify(success=False, message="Error interno del servidor"), 500
+
+
+@materials_bp.route("/<int:material_id>", methods=["GET"])
+@token_required
+@role_required(['Administrador'])
+def get_material(current_user, material_id):
+    """
+    Obtener un material específico - SOLO ADMINISTRADORES
+    """
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT id, nombre, descripcion, cantidad, precio_unitario
+            FROM Materiales
+            WHERE id = ?
+        """, (material_id,))
+        row = cursor.fetchone()
+        conn.close()
+
+        if not row:
+            return jsonify(success=False, message="Material no encontrado"), 404
+
+        material = {
+            "id": row[0],
+            "nombre": row[1],
+            "descripcion": row[2],
+            "cantidad": row[3],
+            "precio_unitario": float(row[4]) if row[4] is not None else None
+        }
+        return jsonify(success=True, data=material), 200
+
+    except Exception:
+        current_app.logger.error("Error obteniendo material %s:\n%s", material_id, traceback.format_exc())
+        return jsonify(success=False, message="Error interno del servidor"), 500
+
+
+@materials_bp.route("/", methods=["POST"])
+@token_required
+@role_required(['Administrador'])
+def create_material(current_user):
+    """
+    Crear nuevo material - SOLO ADMINISTRADORES
+    """
+    try:
+        data = request.get_json(force=True)
+        current_app.logger.info("[CREATE MATERIAL] Payload: %s", data)
+    except Exception:
+        return jsonify(success=False, message="JSON inválido"), 400
+
+    required = ["nombre", "cantidad"]
+    missing = [k for k in required if not data.get(k)]
+    if missing:
+        return jsonify(success=False,
+                       message=f"Faltan campos obligatorios: {', '.join(missing)}"), 400
+
+    try:
+        cantidad = int(data["cantidad"])
+        precio_unitario = None
+        if any(k in data for k in ["precio_unitario", "precioUnitario"]):
+            raw_precio = data.get("precio_unitario", data.get("precioUnitario"))
+            if raw_precio is not None:
+                precio_unitario = float(raw_precio)
+    except (ValueError, TypeError):
+        return jsonify(success=False,
+                       message="cantidad debe ser entero y precio_unitario numérico"), 400
+
+    nombre = data["nombre"].strip()
+    descripcion = data.get("descripcion", "").strip()
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            INSERT INTO Materiales (nombre, descripcion, cantidad, precio_unitario)
+            OUTPUT INSERTED.id
+            VALUES (?, ?, ?, ?)
+        """, (nombre, descripcion, cantidad, precio_unitario))
+
+        result = cursor.fetchone()
+        if not result or result[0] is None:
+            raise Exception("No se pudo obtener el ID del nuevo material.")
+        
+        new_id = int(result[0])
+
+        conn.commit()
+        conn.close()
+
+        nuevo = {
+            "id": new_id,
+            "nombre": nombre,
+            "descripcion": descripcion,
+            "cantidad": cantidad,
+            "precio_unitario": precio_unitario
+        }
+        return jsonify(success=True, data=nuevo), 201
+
+    except Exception:
+        current_app.logger.error("Error creando material:\n%s", traceback.format_exc())
+        return jsonify(success=False, message="Error interno del servidor"), 500
+
+
+@materials_bp.route("/<int:material_id>", methods=["PUT"])
+@token_required
+@role_required(['Administrador'])
+def update_material(current_user, material_id):
+    """
+    Actualizar material - SOLO ADMINISTRADORES
+    """
+    try:
+        data = request.get_json(force=True)
+        current_app.logger.info("[UPDATE MATERIAL %s] Payload: %s", material_id, data)
+    except Exception:
+        return jsonify(success=False, message="JSON inválido"), 400
+
+    fields = []
+    values = []
+    if "nombre" in data:
+        fields.append("nombre = ?")
+        values.append(data["nombre"].strip())
+    if "descripcion" in data:
+        fields.append("descripcion = ?")
+        values.append(data["descripcion"].strip())
+    if "cantidad" in data:
+        try:
+            values.append(int(data["cantidad"]))
+            fields.append("cantidad = ?")
+        except (ValueError, TypeError):
+            return jsonify(success=False, message="cantidad inválida"), 400
+    if "precio_unitario" in data or "precioUnitario" in data:
+        try:
+            raw_precio = data.get("precio_unitario", data.get("precioUnitario"))
+            values.append(float(raw_precio))
+            fields.append("precio_unitario = ?")
+        except (ValueError, TypeError):
+            return jsonify(success=False, message="precio_unitario inválido"), 400
+
+    if not fields:
+        return jsonify(success=False, message="Nada para actualizar"), 400
+
+    values.append(material_id)
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT 1 FROM Materiales WHERE id = ?", (material_id,))
+        if not cursor.fetchone():
+            conn.close()
+            return jsonify(success=False, message="Material no encontrado"), 404
+
+        sql = f"UPDATE Materiales SET {', '.join(fields)} WHERE id = ?"
+        cursor.execute(sql, tuple(values))
+        conn.commit()
+        conn.close()
+
+        return jsonify(success=True, message="Material actualizado"), 200
+
+    except Exception:
+        current_app.logger.error("Error actualizando material %s:\n%s", material_id, traceback.format_exc())
+        return jsonify(success=False, message="Error interno del servidor"), 500
+
+
+@materials_bp.route("/<int:material_id>", methods=["DELETE"])
+@token_required
+@role_required(['Administrador'])
+def delete_material(current_user, material_id):
+    """
+    Eliminar material - SOLO ADMINISTRADORES (con debug detallado de FK)
+    """
+    import pyodbc
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # Verificar que el material exista
+        cursor.execute("SELECT nombre FROM Materiales WHERE id = ?", (material_id,))
+        material = cursor.fetchone()
+        if not material:
+            conn.close()
+            return jsonify(success=False, message="Material no encontrado"), 404
+
+        try:
+            # Intentar eliminar
+            cursor.execute("DELETE FROM Materiales WHERE id = ?", (material_id,))
+            conn.commit()
+            conn.close()
+            return jsonify(success=True, message=f"Material '{material[0]}' eliminado correctamente"), 200
+
+        except pyodbc.IntegrityError as e:
+            conn.rollback()
+            conn.close()
+
+            error_msg = str(e)
+            print("🧩 DEBUG - Error SQL completo:")
+            print(error_msg)
+
+            # Intentar identificar la constraint y tabla asociada
+            constraint_name = None
+            if "constraint" in error_msg:
+                try:
+                    constraint_name = error_msg.split("constraint ")[1].split('"')[1]
+                except Exception:
+                    pass
+
+            if constraint_name:
+                print(f"🧩 DEBUG - Restricción encontrada: {constraint_name}")
+
+                # Buscar la tabla y columna asociada a esa constraint en SQL Server
+                try:
+                    conn = get_db_connection()
+                    cursor = conn.cursor()
+                    cursor.execute("""
+                        SELECT 
+                            fk.name AS FK_name,
+                            tp.name AS ReferencingTable,
+                            cp.name AS ReferencingColumn
+                        FROM sys.foreign_keys AS fk
+                        INNER JOIN sys.foreign_key_columns AS fkc 
+                            ON fk.object_id = fkc.constraint_object_id
+                        INNER JOIN sys.tables AS tp 
+                            ON fkc.parent_object_id = tp.object_id
+                        INNER JOIN sys.columns AS cp 
+                            ON fkc.parent_object_id = cp.object_id 
+                            AND fkc.parent_column_id = cp.column_id
+                        WHERE fk.name = ?
+                    """, (constraint_name,))
+                    ref = cursor.fetchone()
+                    conn.close()
+
+                    if ref:
+                        ref_table = ref[1]
+                        ref_col = ref[2]
+                        msg = (f"No se puede eliminar el material '{material[0]}' "
+                               f"porque está referenciado en la tabla '{ref_table}' "
+                               f"(columna '{ref_col}').")
+                    else:
+                        msg = (f"No se puede eliminar el material '{material[0]}' "
+                               f"porque tiene referencias activas ({constraint_name}).")
+
+                except Exception as lookup_error:
+                    msg = (f"No se puede eliminar el material '{material[0]}' "
+                           f"debido a una restricción de integridad ({constraint_name}).")
+                    print("⚠️ Error al intentar obtener detalles de la FK:", lookup_error)
+
+            else:
+                msg = (f"No se puede eliminar el material '{material[0]}' "
+                       "porque está asociado a una o más etapas (FK no identificada).")
+
+            print("🚫 DEBUG - Mensaje devuelto al cliente:", msg)
+
+            return jsonify({"success": False, "message": msg}), 409
+
+    except Exception:
+        current_app.logger.error("Error eliminando material %s:\n%s", material_id, traceback.format_exc())
+        return jsonify(success=False, message="Error interno del servidor"), 500

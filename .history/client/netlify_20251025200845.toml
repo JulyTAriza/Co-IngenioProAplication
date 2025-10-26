@@ -1,0 +1,30 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NEXT_PUBLIC_API_URL = "https://co-ingenioproaplication-backend.onrender.com"
+  NODE_VERSION = "18"
+
+[build.environment]
+  NEXT_PUBLIC_APP_NAME = "CoIngenioPro"
+  NEXT_PUBLIC_VERSION = "1.0.0"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-XSS-Protection = "1; mode=block"
+
+# Para SPAs (Single Page Applications)
+[[redirects]]
+  from = "/app/*"
+  to = "/app/index.html"
+  status = 200

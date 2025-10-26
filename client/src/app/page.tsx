@@ -16,5 +16,5 @@ export default function Home() {
     }
   }, [router])
 
-  return null
-}
+  return null 
+}// Build fix 

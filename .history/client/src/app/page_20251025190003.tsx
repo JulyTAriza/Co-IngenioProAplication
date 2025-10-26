@@ -17,5 +17,4 @@ export default function Home() {
   }, [router])
 
   return null 
-}// Build fix 
-// Ready for deployment" 
+}

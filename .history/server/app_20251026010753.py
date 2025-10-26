@@ -50,15 +50,8 @@ redis_client.init_app(app)
 def check_critical_notifications():
     try:
         print("Revisando notificaciones críticas...")
-        
-        # En producción, llamar directamente a la función sin HTTP
-        if os.environ.get('RENDER'):
-            from modules.notifications.routes import check_critical_notifications_logic
-            check_critical_notifications_logic()
-        else:
-            # En desarrollo, usar localhost como antes
-            requests.get("http://127.0.0.1:5000/api/notifications/check/critical")
-            
+        # Llamamos al propio endpoint del backend
+        requests.get("http://127.0.0.1:5000/api/notifications/check/critical")
     except Exception as e:
         print(f"Error en scheduler: {e}")
 

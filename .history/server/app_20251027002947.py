@@ -1,4 +1,3 @@
-
 from flask import Flask
 from flask_cors import CORS
 from extensions import Mail, redis_client
@@ -23,17 +22,12 @@ from modules.inventory.routes import inventory_bp
 from modules.forgot.routes import auth_bp
 from modules.stages.routes import etapas_proyecto_bp
 
-
-import os
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-app = Flask(__name__, template_folder=os.path.join(BASE_DIR, "server", "templates"))
-
-
 # Cargar variables de entorno
 load_dotenv()
 
-app = Flask(__name__)
-
+# SOLO UNA instancia de Flask
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+app = Flask(__name__, template_folder=os.path.join(BASE_DIR, "server", "templates"))
 
 # Configuración de correo desde .env
 app.config['MAIL_SERVER'] = os.getenv("MAIL_SERVER")
@@ -45,6 +39,40 @@ app.config['MAIL_DEFAULT_SENDER'] = os.getenv("MAIL_DEFAULT_SENDER")
 
 mail = Mail(app)
 redis_client.init_app(app)
+
+# -------------------------
+# CONFIGURACIÓN CORS - MÁS PERMISIVA PARA DESARROLLO
+# -------------------------
+CORS(
+    app,
+    origins=["http://localhost:3000", "http://127.0.0.1:3000", "https://co-ingeniopro.up.railway.app"],
+    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+    allow_headers=["Content-Type", "Authorization", "Access-Control-Allow-Origin", "Access-Control-Allow-Headers", "Access-Control-Allow-Methods"],
+    expose_headers=["Content-Type", "Authorization"],
+    supports_credentials=True,
+    max_age=3600
+)
+
+# Headers CORS globales
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    response.headers.add('Access-Control-Allow-Credentials', 'true')
+    return response
+
+# Manejar preflight OPTIONS requests
+@app.before_request
+def handle_preflight():
+    if request.method == "OPTIONS":
+        response = jsonify({"status": "success"})
+        response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+        response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization")
+        response.headers.add("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS")
+        response.headers.add("Access-Control-Allow-Credentials", "true")
+        return response, 200
+
 # -------------------------
 # Scheduler para revisar notificaciones críticas
 # -------------------------
@@ -58,7 +86,7 @@ def check_critical_notifications():
             check_critical_notifications_logic()
         else:
             # En desarrollo, usar localhost como antes
-            requests.get("http://127.0.0.1:5000/api/notifications/check/critical")
+            requests.get("http://127.0.0.1:10000/api/notifications/check/critical")
             
     except Exception as e:
         print(f"Error en scheduler: {e}")
@@ -71,16 +99,6 @@ scheduler.start()
 @app.route('/')
 def health_check():
     return {'status': 'healthy', 'message': 'Backend funcionando'}, 200
-
-# Configurar CORS para permitir solicitudes desde Next.js
-CORS(
-    app,
-    origins=["http://localhost:3000", "http://127.0.0.1:3000","https://co-ingeniopro.up.railway.app"],
-    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allow_headers=["Content-Type", "Authorization", "Access-Control-Allow-Origin"],
-    supports_credentials=True
-)
-
 
 # Registrar Blueprints
 app.register_blueprint(login_bp)  # /login
@@ -97,7 +115,6 @@ app.register_blueprint(progress_bp, url_prefix="/progress")
 app.register_blueprint(inventory_bp, url_prefix="/inventory")
 app.register_blueprint(auth_bp, url_prefix='/auth')
 app.register_blueprint(etapas_proyecto_bp, url_prefix="/etapas")
-
 
 if __name__ == '__main__':
     port = 10000  # Fijo en lugar de os.environ.get('PORT')

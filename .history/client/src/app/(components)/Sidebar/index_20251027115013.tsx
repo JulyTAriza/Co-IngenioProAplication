@@ -89,7 +89,7 @@ const SidebarLink = ({
       "/dashboard/dashboard-operario",
       "/my-task",
       "/settings",
-      "/calendar",
+     
     ];
     if (isOperario && !allowedRoutes.includes(href)) {
       e.preventDefault();

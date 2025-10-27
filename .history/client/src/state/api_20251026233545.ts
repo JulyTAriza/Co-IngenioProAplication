@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { API_BASE_URL } from '../../constants';
+//import { API_BASE_URL } from '../../constants';
 
 export interface Notification {
   id: number;
@@ -164,36 +164,6 @@ export interface ProyectoResumen {
     telefono?: string;
     direccion?: string;
   };
-}
-
-// ========================================
-// INTERFACES PARA ETAPAS DE PROYECTO
-// ========================================
-
-export interface EtapaProyecto {
-  id_etapa: number;
-  id_proyecto: number;
-  nombre_etapa: string;
-  description?: string;
-  fecha_inicio: string; // "YYYY-MM-DD"
-  fecha_fin: string;    // "YYYY-MM-DD"
-  estado: string;
-}
-
-export interface NuevaEtapaPayload {
-  nombre_etapa: string;
-  description?: string;
-  fecha_inicio: string;
-  fecha_fin: string;
-  estado?: string;
-}
-
-export interface ActualizarEtapaPayload {
-  nombre_etapa?: string;
-  description?: string;
-  fecha_inicio?: string;
-  fecha_fin?: string;
-  estado?: string;
 }
 
 // Interfaces de tipos de datos para la reportería
@@ -481,15 +451,15 @@ export interface StockComparison {
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-  baseUrl: API_BASE_URL, // producción
-    //baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL, // desarrollo
+    //baseUrl: API_BASE_URL, // producción
+    baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL, // desarrollo
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
       if (token) headers.set("Authorization", `Bearer ${token}`);
       return headers;
     },
   }),
-  tagTypes: ["DashboardMetrics", "Material", "Users", "Expenses","Notifications", "Projects","ProjectDetail","Schedule","MyTasks","Progress","Inventory","UserConfig", "EtapasProyecto"],
+  tagTypes: ["DashboardMetrics", "Material", "Users", "Expenses","Notifications", "Projects","ProjectDetail","Schedule","MyTasks","Progress","Inventory","UserConfig"],
   endpoints: (build) => ({
 
   getDashboardMetrics: build.query<DashboardMetrics, void>({
@@ -565,7 +535,6 @@ export const api = createApi({
       }),
       invalidatesTags: ["Material"],
     }),
-
 
   createUser: build.mutation<User, { username: string; password: string; e_mail: string }>({
   query: (newUser) => ({
@@ -897,61 +866,6 @@ reopenMyTask: build.mutation<  // ← Cambié nombre
   invalidatesTags: ["MyTasks", "Progress"],
 }),
 
-    // ========================================
-    // ETAPAS DE PROYECTO
-    // ========================================
-
-    // 📌 Obtener etapas de un proyecto
-    getEtapasByProyecto: build.query<EtapaProyecto[], number>({
-      query: (proyectoId) => `/etapas/proyecto/${proyectoId}`,
-      transformResponse: (response: { success: boolean; data: EtapaProyecto[] }) => 
-        response.data,
-      providesTags: (result, error, proyectoId) => [
-        { type: 'EtapasProyecto', id: `proyecto-${proyectoId}` }
-      ],
-    }),
-
-    // 📌 Crear nueva etapa
-    createEtapa: build.mutation<
-      { success: boolean; data: EtapaProyecto; message?: string },
-      { proyectoId: number; data: NuevaEtapaPayload }
-    >({
-      query: ({ proyectoId, data }) => ({
-        url: `/etapas/proyecto/${proyectoId}`,
-        method: "POST",
-        body: data,
-      }),
-      invalidatesTags: (result, error, { proyectoId }) => [
-        { type: 'EtapasProyecto', id: `proyecto-${proyectoId}` }
-      ],
-    }),
-
-    // 📌 Actualizar etapa
-    updateEtapa: build.mutation<
-      { success: boolean; message: string },
-      { etapaId: number; data: ActualizarEtapaPayload }
-    >({
-      query: ({ etapaId, data }) => ({
-        url: `/etapas/${etapaId}`,
-        method: "PUT",
-        body: data,
-      }),
-      invalidatesTags: (result, error, { etapaId }) => [
-        'EtapasProyecto' // Invalida todas las etapas por seguridad
-      ],
-    }),
-
-    // 📌 Eliminar etapa
-    deleteEtapa: build.mutation<
-      { success: boolean; message: string },
-      number
-    >({
-      query: (etapaId) => ({
-        url: `/etapas/${etapaId}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: ['EtapasProyecto'],
-    }),
 // ========================================
 // MONITOREO DE PROGRESO
 // ========================================
@@ -1215,16 +1129,11 @@ useGetTopUsedMaterialsQuery,
 useGetInventoryValuationQuery,
 useGetMaterialDetailQuery,
 useGetStockComparisonQuery,
-useVerifyUserMutation,
+  useVerifyUserMutation,
   useVerifyCodeMutation,
   useResetPasswordMutation,
   useSolicitarCodigoContrasenaMutation, // 🔐 NUEVO
   useCambiarContrasenaMutation,
-  useGetEtapasByProyectoQuery,
-  useCreateEtapaMutation,
-  useUpdateEtapaMutation,
-  useDeleteEtapaMutation,
-
 
 
 } = api;

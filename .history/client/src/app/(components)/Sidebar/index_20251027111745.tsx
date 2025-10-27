@@ -23,48 +23,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState, useEffect } from "react";
 
-/* ----------------------------------------------------------
-   MODAL DE ACCESO DENEGADO
----------------------------------------------------------- */
-const AccessDeniedModal = ({
-  show,
-  onClose,
-}: {
-  show: boolean;
-  onClose: () => void;
-}) => {
-  if (!show) return null;
-
-  return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-[9999]">
-      <div className="bg-white rounded-2xl shadow-xl p-6 w-80 text-center animate-fade-in">
-        <h2 className="text-lg font-semibold text-gray-800 mb-3">
-          Acceso denegado
-        </h2>
-        <p className="text-sm text-gray-600 mb-5">
-          No tienes permisos para acceder a esta sección.
-        </p>
-        <button
-          onClick={onClose}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors"
-        >
-          Aceptar
-        </button>
-      </div>
-    </div>
-  );
-};
-
-/* ----------------------------------------------------------
-   LINK DEL SIDEBAR
----------------------------------------------------------- */
 interface SidebarLinkProps {
   href: string;
   icon: LucideIcon;
   label: string;
   isCollapsed: boolean;
   isOperario: boolean;
-  onAccessDenied?: () => void;
 }
 
 const SidebarLink = ({
@@ -73,27 +37,22 @@ const SidebarLink = ({
   label,
   isCollapsed,
   isOperario,
-  onAccessDenied,
 }: SidebarLinkProps) => {
   const pathname = usePathname();
-
-  const isActive =
-    pathname === href ||
+  
+  // Determinar si el link está activo considerando ambos dashboards
+  const isActive = 
+    pathname === href || 
     (pathname === "/" && href === "/dashboard") ||
-    (pathname === "/dashboard/dashboard-operario" &&
-      href === "/dashboard/dashboard-operario") ||
+    (pathname === "/dashboard/dashboard-operario" && href === "/dashboard/dashboard-operario") ||
     (pathname === "/dashboard" && href === "/dashboard");
 
+  // Si es operario y trata de acceder a rutas no permitidas, prevenir comportamiento por defecto
   const handleClick = (e: React.MouseEvent) => {
-    const allowedRoutes = [
-      "/dashboard/dashboard-operario",
-      "/my-task",
-      "/settings",
-      "/calendar",
-    ];
+    const allowedRoutes = ['/dashboard/dashboard-operario', '/my-task', '/settings'];
     if (isOperario && !allowedRoutes.includes(href)) {
       e.preventDefault();
-      onAccessDenied?.(); // Mostrar modal
+      alert("No tienes permisos para acceder a esta sección");
       return;
     }
   };
@@ -105,26 +64,15 @@ const SidebarLink = ({
           isCollapsed ? "justify-center py-3" : "justify-start px-6 py-3"
         }
         hover:text-blue-600 hover:bg-blue-50 gap-3 transition-all duration-200 ${
-          isActive
-            ? "bg-blue-100 text-blue-700 border-r-2 border-blue-600"
-            : "text-gray-600"
+          isActive ? "bg-blue-100 text-blue-700 border-r-2 border-blue-600" : "text-gray-600"
         } ${
-          isOperario &&
-          ![
-            "/dashboard/dashboard-operario",
-            "/my-task",
-            "/settings",
-            "/calendar",
-          ].includes(href)
-            ? "opacity-50 cursor-not-allowed"
-            : ""
+          isOperario && !['/dashboard/dashboard-operario', '/my-task', '/settings','/calendar'].includes(href) 
+            ? 'opacity-50 cursor-not-allowed' 
+            : ''
         }`}
       >
-        <Icon
-          className={`w-5 h-5 ${
-            isActive ? "text-blue-600" : "text-gray-500"
-          }`}
-        />
+        <Icon className={`w-5 h-5 ${isActive ? "text-blue-600" : "text-gray-500"}`} />
+
         <span
           className={`${
             isCollapsed ? "hidden" : "block"
@@ -137,15 +85,13 @@ const SidebarLink = ({
   );
 };
 
-/* ----------------------------------------------------------
-   SIDEBAR PRINCIPAL
----------------------------------------------------------- */
 const Sidebar = () => {
   const dispatch = useAppDispatch();
   const isSidebarCollapsed = useAppSelector(
     (state) => state.global.isSidebarCollapsed
   );
 
+  // Estado para el usuario
   const [usuario, setUsuario] = useState<{
     id: number;
     username: string;
@@ -153,10 +99,9 @@ const Sidebar = () => {
     rol: string;
   } | null>(null);
 
-  const [showAccessDenied, setShowAccessDenied] = useState(false);
-
+  // Cargar usuario del localStorage
   useEffect(() => {
-    const usuarioGuardado = localStorage.getItem("usuario");
+    const usuarioGuardado = localStorage.getItem('usuario');
     if (usuarioGuardado) {
       try {
         const usuarioData = JSON.parse(usuarioGuardado);
@@ -172,87 +117,92 @@ const Sidebar = () => {
     dispatch(setIsSidebarCollapsed(!isSidebarCollapsed));
   };
 
-  const isOperario = usuario?.rol?.toLowerCase() === "operario";
+  // Verificar si el usuario es operario
+  const isOperario = usuario?.rol?.toLowerCase() === 'operario';
   console.log("Es operario:", isOperario, "Rol:", usuario?.rol);
 
+  // Definir todos los links disponibles
   const allLinks = [
     {
-      href: isOperario ? "/dashboard/dashboard-operario" : "/dashboard",
+      href: isOperario ? "/dashboard/dashboard-operario" : "/dashboard", // ← CAMBIO IMPORTANTE AQUÍ
       icon: Layout,
       label: "Dashboard",
-      allowedForOperario: true,
+      allowedForOperario: true
     },
     {
       href: "/projects",
       icon: LayoutDashboard,
       label: "Proyectos",
-      allowedForOperario: false,
+      allowedForOperario: false
     },
     {
       href: "/stages",
       icon: Layers,
       label: "Etapas",
-      allowedForOperario: false,
+      allowedForOperario: false
     },
     {
       href: "/inventory",
       icon: Boxes,
       label: "Inventario",
-      allowedForOperario: false,
+      allowedForOperario: false
     },
     {
       href: "/materials",
       icon: Package,
       label: "Materiales",
-      allowedForOperario: false,
+      allowedForOperario: false
     },
     {
       href: "/schedule",
       icon: CalendarClock,
       label: "Cronograma",
-      allowedForOperario: false,
+      allowedForOperario: false
     },
     {
       href: "/my-task",
       icon: CheckSquare,
       label: "Mis Tareas",
-      allowedForOperario: true,
+      allowedForOperario: true
     },
     {
       href: "/calendar",
       icon: Calendar,
       label: "Calendario",
-      allowedForOperario: true,
+      allowedForOperario: true
     },
     {
       href: "/progress",
       icon: TrendingUp,
       label: "Progreso",
-      allowedForOperario: false,
+      allowedForOperario: false
     },
     {
       href: "/reports",
       icon: FileBarChart,
       label: "Reportes",
-      allowedForOperario: false,
+      allowedForOperario: false
     },
     {
       href: "/users",
       icon: User,
       label: "Usuarios",
-      allowedForOperario: false,
+      allowedForOperario: false
     },
     {
       href: "/settings",
       icon: SlidersHorizontal,
       label: "Configuraciones",
-      allowedForOperario: true,
+      allowedForOperario: true
     },
   ];
 
-  const visibleLinks = isOperario
-    ? allLinks.filter((link) => link.allowedForOperario)
+  // Filtrar links según el rol
+  const visibleLinks = isOperario 
+    ? allLinks.filter(link => link.allowedForOperario)
     : allLinks;
+
+  console.log("Links visibles para", usuario?.rol, ":", visibleLinks.map(l => l.label));
 
   const sidebarClassNames = `fixed flex flex-col ${
     isSidebarCollapsed ? "w-0 md:w-16" : "w-72 md:w-64"
@@ -294,7 +244,7 @@ const Sidebar = () => {
         </button>
       </div>
 
-      {/* LINKS */}
+      {/* LINKS - Solo los permitidos según el rol */}
       <div className="flex-grow mt-2 space-y-1">
         {visibleLinks.map((link) => (
           <SidebarLink
@@ -304,28 +254,19 @@ const Sidebar = () => {
             label={link.label}
             isCollapsed={isSidebarCollapsed}
             isOperario={isOperario}
-            onAccessDenied={() => setShowAccessDenied(true)} // Mostrar modal
           />
         ))}
       </div>
 
       {/* FOOTER */}
       <div className={`${isSidebarCollapsed ? "hidden" : "block"} py-6`}>
-        <p className="text-center text-xs text-gray-500">
-          &copy; 2025 Co-IngenioPro
-        </p>
+        <p className="text-center text-xs text-gray-500">&copy; 2025 Co-IngenioPro</p>
         {!isSidebarCollapsed && isOperario && (
           <p className="text-center text-xs text-gray-400 mt-1">
             Acceso Limitado - Operario
           </p>
         )}
       </div>
-
-      {/* MODAL DE ACCESO DENEGADO */}
-      <AccessDeniedModal
-        show={showAccessDenied}
-        onClose={() => setShowAccessDenied(false)}
-      />
     </div>
   );
 };

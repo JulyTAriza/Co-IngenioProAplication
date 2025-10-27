@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { API_BASE_URL } from '../../constants';
+//import { API_BASE_URL } from '../../constants';
 
 export interface Notification {
   id: number;
@@ -481,8 +481,8 @@ export interface StockComparison {
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-  baseUrl: API_BASE_URL, // producción
-    //baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL, // desarrollo
+    //baseUrl: API_BASE_URL, // producción
+    baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL, // desarrollo
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
       if (token) headers.set("Authorization", `Bearer ${token}`);

@@ -1,0 +1,299 @@
+{
+  "test_config": {
+    "endpoint": "/",
+    "concurrent_users": 20,
+    "timestamp": "2025-11-04T21:11:49.416991"
+  },
+  "metrics": {
+    "total_requests": 20,
+    "successful_requests": 20,
+    "failed_requests": 0,
+    "failure_rate": 0.0,
+    "avg_response_time": 0.3156943440437317,
+    "p90_response_time": 0.43301820755004883,
+    "p95_response_time": 0.6082565784454346,
+    "total_test_time": 0.6350176334381104
+  },
+  "detailed_results": [
+    {
+      "endpoint": "/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.18180370330810547,
+      "response_size": 53,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:11:48.962732",
+      "data_keys": [
+        "message",
+        "status"
+      ]
+    },
+    {
+      "endpoint": "/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.18188834190368652,
+      "response_size": 53,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:11:48.964759",
+      "data_keys": [
+        "message",
+        "status"
+      ]
+    },
+    {
+      "endpoint": "/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.1797654628753662,
+      "response_size": 53,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:11:48.966059",
+      "data_keys": [
+        "message",
+        "status"
+      ]
+    },
+    {
+      "endpoint": "/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.18388652801513672,
+      "response_size": 53,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:11:48.967344",
+      "data_keys": [
+        "message",
+        "status"
+      ]
+    },
+    {
+      "endpoint": "/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.19051599502563477,
+      "response_size": 53,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:11:48.981923",
+      "data_keys": [
+        "message",
+        "status"
+      ]
+    },
+    {
+      "endpoint": "/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.19280600547790527,
+      "response_size": 53,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:11:48.982007",
+      "data_keys": [
+        "message",
+        "status"
+      ]
+    },
+    {
+      "endpoint": "/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.2022085189819336,
+      "response_size": 53,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:11:48.983784",
+      "data_keys": [
+        "message",
+        "status"
+      ]
+    },
+    {
+      "endpoint": "/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.1997671127319336,
+      "response_size": 53,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:11:48.983627",
+      "data_keys": [
+        "message",
+        "status"
+      ]
+    },
+    {
+      "endpoint": "/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.19459772109985352,
+      "response_size": 53,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:11:48.984848",
+      "data_keys": [
+        "message",
+        "status"
+      ]
+    },
+    {
+      "endpoint": "/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.1975557804107666,
+      "response_size": 53,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:11:48.984979",
+      "data_keys": [
+        "message",
+        "status"
+      ]
+    },
+    {
+      "endpoint": "/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.4198482036590576,
+      "response_size": 53,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:11:49.211910",
+      "data_keys": [
+        "message",
+        "status"
+      ]
+    },
+    {
+      "endpoint": "/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.41184186935424805,
+      "response_size": 53,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:11:49.212091",
+      "data_keys": [
+        "message",
+        "status"
+      ]
+    },
+    {
+      "endpoint": "/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.41994619369506836,
+      "response_size": 53,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:11:49.221651",
+      "data_keys": [
+        "message",
+        "status"
+      ]
+    },
+    {
+      "endpoint": "/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.4262983798980713,
+      "response_size": 53,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:11:49.221727",
+      "data_keys": [
+        "message",
+        "status"
+      ]
+    },
+    {
+      "endpoint": "/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.42557811737060547,
+      "response_size": 53,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:11:49.223164",
+      "data_keys": [
+        "message",
+        "status"
+      ]
+    },
+    {
+      "endpoint": "/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.4270298480987549,
+      "response_size": 53,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:11:49.223279",
+      "data_keys": [
+        "message",
+        "status"
+      ]
+    },
+    {
+      "endpoint": "/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.41805601119995117,
+      "response_size": 53,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:11:49.224065",
+      "data_keys": [
+        "message",
+        "status"
+      ]
+    },
+    {
+      "endpoint": "/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.4192183017730713,
+      "response_size": 53,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:11:49.222956",
+      "data_keys": [
+        "message",
+        "status"
+      ]
+    },
+    {
+      "endpoint": "/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.43301820755004883,
+      "response_size": 53,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:11:49.232302",
+      "data_keys": [
+        "message",
+        "status"
+      ]
+    },
+    {
+      "endpoint": "/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.6082565784454346,
+      "response_size": 53,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:11:49.413183",
+      "data_keys": [
+        "message",
+        "status"
+      ]
+    }
+  ]
+}

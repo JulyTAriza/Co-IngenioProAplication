@@ -1,0 +1,87 @@
+{
+  "endpoint": "/materials/",
+  "test_timestamp": "2025-11-04T21:44:29.624984",
+  "token_strategy": "individual_per_request",
+  "base_url": "https://co-ingenioproaplication-backend.onrender.com",
+  "results_by_load": [
+    {
+      "concurrent_users": 3,
+      "total_requests": 3,
+      "successful_requests": 3,
+      "failed_requests": 0,
+      "success_rate": 100.0,
+      "failure_rate": 0.0,
+      "avg_response_time": 1.0977564652760823,
+      "min_response_time": 1.075397253036499,
+      "max_response_time": 1.1250863075256348,
+      "p50_response_time": 1.0927858352661133,
+      "p90_response_time": 1.1250863075256348,
+      "p95_response_time": 1.1250863075256348,
+      "p99_response_time": 1.1250863075256348,
+      "requests_per_second": 0.3841315645919621,
+      "total_test_time": 7.809824228286743
+    },
+    {
+      "concurrent_users": 5,
+      "total_requests": 5,
+      "successful_requests": 5,
+      "failed_requests": 0,
+      "success_rate": 100.0,
+      "failure_rate": 0.0,
+      "avg_response_time": 1.4047264575958252,
+      "min_response_time": 0.9537680149078369,
+      "max_response_time": 2.2371766567230225,
+      "p50_response_time": 1.1231157779693604,
+      "p90_response_time": 2.2371766567230225,
+      "p95_response_time": 2.2371766567230225,
+      "p99_response_time": 2.2371766567230225,
+      "requests_per_second": 0.44988058541933085,
+      "total_test_time": 11.114060401916504
+    },
+    {
+      "concurrent_users": 8,
+      "total_requests": 8,
+      "successful_requests": 4,
+      "failed_requests": 4,
+      "success_rate": 50.0,
+      "failure_rate": 50.0,
+      "avg_response_time": 3.6017746925354004,
+      "min_response_time": 6.971770524978638,
+      "max_response_time": 7.8442606925964355,
+      "p50_response_time": 7.019346237182617,
+      "p90_response_time": 7.8442606925964355,
+      "p95_response_time": 7.8442606925964355,
+      "p99_response_time": 7.8442606925964355,
+      "requests_per_second": 0.4879425117646596,
+      "total_test_time": 16.395374059677124
+    },
+    {
+      "concurrent_users": 10,
+      "total_requests": 10,
+      "successful_requests": 4,
+      "failed_requests": 6,
+      "success_rate": 40.0,
+      "failure_rate": 60.0,
+      "avg_response_time": 3.822237467765808,
+      "min_response_time": 9.380878448486328,
+      "max_response_time": 9.742786169052124,
+      "p50_response_time": 9.593042373657227,
+      "p90_response_time": 9.742786169052124,
+      "p95_response_time": 9.742786169052124,
+      "p99_response_time": 9.742786169052124,
+      "requests_per_second": 0.5358713618661384,
+      "total_test_time": 18.661195039749146
+    }
+  ],
+  "summary": {
+    "total_tests": 4,
+    "load_levels": [
+      3,
+      5,
+      8,
+      10
+    ],
+    "overall_success_rate": 72.5,
+    "avg_throughput": 0.46445650591052273
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "test_config": {
+    "endpoint": "/",
+    "threads": 8,
+    "timestamp": "2025-11-04T21:00:54.287504"
+  },
+  "metrics": {
+    "total_requests": 8,
+    "successful_requests": 8,
+    "failed_requests": 0,
+    "failure_rate": 0.0,
+    "avg_response_time": 0.44824424386024475,
+    "total_test_time": 0.694669246673584
+  },
+  "detailed_results": [
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.38078904151916504,
+      "response_size": 53,
+      "timestamp": "2025-11-04T21:00:53.984423",
+      "headers_sent": {
+        "authorization": false
+      }
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.3970150947570801,
+      "response_size": 53,
+      "timestamp": "2025-11-04T21:00:53.999376",
+      "headers_sent": {
+        "authorization": false
+      }
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.3936910629272461,
+      "response_size": 53,
+      "timestamp": "2025-11-04T21:00:53.999956",
+      "headers_sent": {
+        "authorization": false
+      }
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.41694045066833496,
+      "response_size": 53,
+      "timestamp": "2025-11-04T21:00:54.009380",
+      "headers_sent": {
+        "authorization": false
+      }
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.417377233505249,
+      "response_size": 53,
+      "timestamp": "2025-11-04T21:00:54.018566",
+      "headers_sent": {
+        "authorization": false
+      }
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.44019627571105957,
+      "response_size": 53,
+      "timestamp": "2025-11-04T21:00:54.035030",
+      "headers_sent": {
+        "authorization": false
+      }
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.44812440872192383,
+      "response_size": 53,
+      "timestamp": "2025-11-04T21:00:54.042040",
+      "headers_sent": {
+        "authorization": false
+      }
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.6918203830718994,
+      "response_size": 53,
+      "timestamp": "2025-11-04T21:00:54.283173",
+      "headers_sent": {
+        "authorization": false
+      }
+    }
+  ]
+}

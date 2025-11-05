@@ -1,0 +1,86 @@
+{
+  "test_config": {
+    "endpoint": "/",
+    "concurrent_users": 5,
+    "token_strategy": "individual_per_request",
+    "timestamp": "2025-11-04T21:19:11.282037"
+  },
+  "metrics": {
+    "total_requests": 5,
+    "successful_requests": 4,
+    "failed_requests": 1,
+    "failure_rate": 20.0,
+    "avg_response_time": 0.28318276405334475,
+    "p90_response_time": 0.4646449089050293,
+    "p95_response_time": 0.4646449089050293,
+    "total_test_time": 10.218904495239258
+  },
+  "detailed_results": [
+    {
+      "endpoint": "/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.32091808319091797,
+      "response_size": 53,
+      "has_valid_json": true,
+      "token_used": "eyJhbGciOi...",
+      "timestamp": "2025-11-04T21:19:09.497796",
+      "data_keys": [
+        "message",
+        "status"
+      ]
+    },
+    {
+      "endpoint": "/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.4646449089050293,
+      "response_size": 53,
+      "has_valid_json": true,
+      "token_used": "eyJhbGciOi...",
+      "timestamp": "2025-11-04T21:19:09.577538",
+      "data_keys": [
+        "message",
+        "status"
+      ]
+    },
+    {
+      "endpoint": "/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.33357954025268555,
+      "response_size": 53,
+      "has_valid_json": true,
+      "token_used": "eyJhbGciOi...",
+      "timestamp": "2025-11-04T21:19:09.724108",
+      "data_keys": [
+        "message",
+        "status"
+      ]
+    },
+    {
+      "endpoint": "/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.2967712879180908,
+      "response_size": 53,
+      "has_valid_json": true,
+      "token_used": "eyJhbGciOi...",
+      "timestamp": "2025-11-04T21:19:09.964337",
+      "data_keys": [
+        "message",
+        "status"
+      ]
+    },
+    {
+      "endpoint": "/",
+      "success": false,
+      "error": "No se pudo obtener token",
+      "timestamp": "2025-11-04T21:19:11.275676"
+    }
+  ]
+}

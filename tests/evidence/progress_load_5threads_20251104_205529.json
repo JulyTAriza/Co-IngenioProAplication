@@ -1,0 +1,59 @@
+{
+  "test_config": {
+    "endpoint": "/progress",
+    "threads": 5,
+    "timestamp": "2025-11-04T20:55:29.769837"
+  },
+  "metrics": {
+    "total_requests": 5,
+    "successful_requests": 0,
+    "failed_requests": 5,
+    "failure_rate": 100.0,
+    "avg_response_time": 0.49044036865234375,
+    "max_response_time": 0.6261403560638428,
+    "min_response_time": 0.450427770614624,
+    "total_test_time": 0.6283462047576904
+  },
+  "detailed_results": [
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/progress",
+      "status_code": 404,
+      "success": false,
+      "response_time": 0.450427770614624,
+      "response_size": 207,
+      "timestamp": "2025-11-04T20:55:29.594811"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/progress",
+      "status_code": 404,
+      "success": false,
+      "response_time": 0.45440030097961426,
+      "response_size": 207,
+      "timestamp": "2025-11-04T20:55:29.595680"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/progress",
+      "status_code": 404,
+      "success": false,
+      "response_time": 0.45505452156066895,
+      "response_size": 207,
+      "timestamp": "2025-11-04T20:55:29.597258"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/progress",
+      "status_code": 404,
+      "success": false,
+      "response_time": 0.46617889404296875,
+      "response_size": 207,
+      "timestamp": "2025-11-04T20:55:29.609143"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/progress",
+      "status_code": 404,
+      "success": false,
+      "response_time": 0.6261403560638428,
+      "response_size": 207,
+      "timestamp": "2025-11-04T20:55:29.766670"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "url": "https://co-ingenioproaplication-backend.onrender.com/reports",
+    "status_code": 404,
+    "success": false,
+    "response_time": 0.302941
+  },
+  {
+    "url": "https://co-ingenioproaplication-backend.onrender.com/reports",
+    "status_code": 404,
+    "success": false,
+    "response_time": 0.300483
+  },
+  {
+    "url": "https://co-ingenioproaplication-backend.onrender.com/reports",
+    "status_code": 404,
+    "success": false,
+    "response_time": 0.307224
+  },
+  {
+    "url": "https://co-ingenioproaplication-backend.onrender.com/reports",
+    "status_code": 404,
+    "success": false,
+    "response_time": 0.324665
+  },
+  {
+    "url": "https://co-ingenioproaplication-backend.onrender.com/reports",
+    "status_code": 404,
+    "success": false,
+    "response_time": 0.364453
+  }
+]

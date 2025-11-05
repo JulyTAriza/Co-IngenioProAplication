@@ -1,0 +1,179 @@
+{
+  "test_config": {
+    "endpoint": "/",
+    "threads": 20,
+    "timestamp": "2025-11-04T20:55:39.231080"
+  },
+  "metrics": {
+    "total_requests": 20,
+    "successful_requests": 20,
+    "failed_requests": 0,
+    "failure_rate": 0.0,
+    "avg_response_time": 0.43669345378875735,
+    "max_response_time": 0.6025710105895996,
+    "min_response_time": 0.3461930751800537,
+    "total_test_time": 0.6295959949493408
+  },
+  "detailed_results": [
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.34961628913879395,
+      "response_size": 53,
+      "timestamp": "2025-11-04T20:55:38.952007"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.35202813148498535,
+      "response_size": 53,
+      "timestamp": "2025-11-04T20:55:38.953532"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.36586642265319824,
+      "response_size": 53,
+      "timestamp": "2025-11-04T20:55:38.969022"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.3569355010986328,
+      "response_size": 53,
+      "timestamp": "2025-11-04T20:55:38.974491"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.36026906967163086,
+      "response_size": 53,
+      "timestamp": "2025-11-04T20:55:38.974385"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.36249256134033203,
+      "response_size": 53,
+      "timestamp": "2025-11-04T20:55:38.978086"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.3656044006347656,
+      "response_size": 53,
+      "timestamp": "2025-11-04T20:55:38.978223"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.3461930751800537,
+      "response_size": 53,
+      "timestamp": "2025-11-04T20:55:38.980728"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.3719291687011719,
+      "response_size": 53,
+      "timestamp": "2025-11-04T20:55:38.980813"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.37379932403564453,
+      "response_size": 53,
+      "timestamp": "2025-11-04T20:55:38.992876"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.38814353942871094,
+      "response_size": 53,
+      "timestamp": "2025-11-04T20:55:39.029957"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.42326903343200684,
+      "response_size": 53,
+      "timestamp": "2025-11-04T20:55:39.030066"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.4187023639678955,
+      "response_size": 53,
+      "timestamp": "2025-11-04T20:55:39.039904"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.5551095008850098,
+      "response_size": 53,
+      "timestamp": "2025-11-04T20:55:39.155658"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.5589597225189209,
+      "response_size": 53,
+      "timestamp": "2025-11-04T20:55:39.164007"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.524200439453125,
+      "response_size": 53,
+      "timestamp": "2025-11-04T20:55:39.163909"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.5422911643981934,
+      "response_size": 53,
+      "timestamp": "2025-11-04T20:55:39.180400"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.5701489448547363,
+      "response_size": 53,
+      "timestamp": "2025-11-04T20:55:39.180524"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.5457394123077393,
+      "response_size": 53,
+      "timestamp": "2025-11-04T20:55:39.181584"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.6025710105895996,
+      "response_size": 53,
+      "timestamp": "2025-11-04T20:55:39.226366"
+    }
+  ]
+}

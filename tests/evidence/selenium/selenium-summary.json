@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Dashboard",
+    "url": "https://co-ingeniopro.up.railway.app/dashboard",
+    "title": "",
+    "screenshot": "tests\\evidence\\dashboard_screenshot.png"
+  },
+  {
+    "name": "Projects",
+    "url": "https://co-ingeniopro.up.railway.app/projects",
+    "title": "",
+    "screenshot": "tests\\evidence\\projects_screenshot.png"
+  },
+  {
+    "name": "Schedule",
+    "url": "https://co-ingeniopro.up.railway.app/schedule",
+    "title": "",
+    "screenshot": "tests\\evidence\\schedule_screenshot.png"
+  },
+  {
+    "name": "Materials",
+    "url": "https://co-ingeniopro.up.railway.app/materials",
+    "title": "",
+    "screenshot": "tests\\evidence\\materials_screenshot.png"
+  },
+  {
+    "name": "Inventory",
+    "url": "https://co-ingeniopro.up.railway.app/inventory",
+    "title": "",
+    "screenshot": "tests\\evidence\\inventory_screenshot.png"
+  },
+  {
+    "name": "Stages",
+    "url": "https://co-ingeniopro.up.railway.app/stages",
+    "title": "",
+    "screenshot": "tests\\evidence\\stages_screenshot.png"
+  }
+]

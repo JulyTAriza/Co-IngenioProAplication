@@ -1,0 +1,9 @@
+[
+  {
+    "threads": 5,
+    "total": 5,
+    "success": 0,
+    "failures": 5,
+    "avg_response": 0.169936
+  }
+]

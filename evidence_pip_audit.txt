@@ -1,0 +1,5 @@
+Name   Version ID                  Fix Versions
+------ ------- ------------------- -------------------
+django 5.0.14  GHSA-7xr5-9hcq-chf9 4.2.22,5.1.10,5.2.2
+django 5.0.14  GHSA-6w2r-r2m5-xq5w 4.2.24,5.1.12,5.2.6
+pip    24.3.1  GHSA-4xh5-x5gv-qwph 25.3

@@ -1,0 +1,32 @@
+[
+  {
+    "url": "https://co-ingenioproaplication-backend.onrender.com/materials",
+    "status_code": 401,
+    "success": false,
+    "response_time": 0.167827
+  },
+  {
+    "url": "https://co-ingenioproaplication-backend.onrender.com/materials",
+    "status_code": 401,
+    "success": false,
+    "response_time": 0.171987
+  },
+  {
+    "url": "https://co-ingenioproaplication-backend.onrender.com/materials",
+    "status_code": 401,
+    "success": false,
+    "response_time": 0.158967
+  },
+  {
+    "url": "https://co-ingenioproaplication-backend.onrender.com/materials",
+    "status_code": 401,
+    "success": false,
+    "response_time": 0.174114
+  },
+  {
+    "url": "https://co-ingenioproaplication-backend.onrender.com/materials",
+    "status_code": 401,
+    "success": false,
+    "response_time": 0.176785
+  }
+]

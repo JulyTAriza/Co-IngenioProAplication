@@ -1,0 +1,59 @@
+{
+  "test_config": {
+    "endpoint": "/materials",
+    "threads": 5,
+    "timestamp": "2025-11-04T20:55:08.008805"
+  },
+  "metrics": {
+    "total_requests": 5,
+    "successful_requests": 0,
+    "failed_requests": 5,
+    "failure_rate": 100.0,
+    "avg_response_time": 0.8967148780822753,
+    "max_response_time": 1.032670497894287,
+    "min_response_time": 0.7766411304473877,
+    "total_test_time": 1.0355405807495117
+  },
+  "detailed_results": [
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/materials",
+      "status_code": 401,
+      "success": false,
+      "response_time": 0.7766411304473877,
+      "response_size": 49,
+      "timestamp": "2025-11-04T20:55:07.752246"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/materials",
+      "status_code": 401,
+      "success": false,
+      "response_time": 0.7973074913024902,
+      "response_size": 49,
+      "timestamp": "2025-11-04T20:55:07.769796"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/materials",
+      "status_code": 401,
+      "success": false,
+      "response_time": 0.9115090370178223,
+      "response_size": 49,
+      "timestamp": "2025-11-04T20:55:07.888688"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/materials",
+      "status_code": 401,
+      "success": false,
+      "response_time": 0.9654462337493896,
+      "response_size": 49,
+      "timestamp": "2025-11-04T20:55:07.939659"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/materials",
+      "status_code": 401,
+      "success": false,
+      "response_time": 1.032670497894287,
+      "response_size": 49,
+      "timestamp": "2025-11-04T20:55:08.004383"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "endpoint": "/usuarios",
+  "test_timestamp": "2025-11-04T20:55:18.892018",
+  "results": [
+    {
+      "threads": 5,
+      "total_requests": 5,
+      "successful_requests": 0,
+      "failed_requests": 5,
+      "failure_rate": 100.0,
+      "avg_response_time": 1.1253628253936767,
+      "max_response_time": 1.261397123336792,
+      "min_response_time": 1.0460484027862549,
+      "total_test_time": 1.2680621147155762
+    }
+  ]
+}

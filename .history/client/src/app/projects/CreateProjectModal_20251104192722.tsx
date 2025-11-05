@@ -11,7 +11,6 @@ import {
   useGetUsersQuery
 } from "@/state/api";
 
-//
 function ConfirmModal({ 
   isOpen, 
   onClose, 
@@ -58,7 +57,6 @@ function ConfirmModal({
   );
 }
 
-// 🔥 NUEVO: Componente Modal de Éxito
 function SuccessModal({ 
   isOpen, 
   onClose, 
@@ -97,7 +95,6 @@ function SuccessModal({
   );
 }
 
-// 🔥 NUEVO: Componente Modal de Error
 function ErrorModal({ 
   isOpen, 
   onClose, 
@@ -206,7 +203,6 @@ export default function CreateProjectModal({
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
 
-  // 🔥 NUEVO: Estados para los modales
   const [confirmModal, setConfirmModal] = useState({
     isOpen: false,
     title: "",
@@ -260,7 +256,6 @@ export default function CreateProjectModal({
       const ciudad = cities.find(c => c.id === proyecto.id_ciudad);
       const cliente = clients.find(c => Number(c.id) === proyecto.id_cliente);
 
-      // VALIDACIÓN CRÍTICA: Filtrar materiales válidos
       const materialesValidados = Array.isArray(proyecto.materiales) 
         ? proyecto.materiales.filter((material: any) => 
             material && 
@@ -288,7 +283,7 @@ export default function CreateProjectModal({
         fecha_fin: formatDateForInput(proyecto.fecha_fin),
         presupuesto: String(proyecto.presupuesto !== null && proyecto.presupuesto !== undefined ? proyecto.presupuesto : ""),
         estado: proyecto.estado || "Planificación",
-        materiales: materialesValidados, // ← USAR MATERIALES VALIDADOS
+        materiales: materialesValidados,
       });
       
       setEquipo(proyecto.equipo || []);
@@ -302,7 +297,6 @@ export default function CreateProjectModal({
     }
   }, [proyecto, cities, clients, isOpen, resetForm]);
 
-  // DEBUG: Mostrar cambios en formData.materiales
   useEffect(() => {
     if (formData.materiales.length > 0) {
       console.log("📦 formData.materiales actualizado:", formData.materiales);
@@ -312,11 +306,9 @@ export default function CreateProjectModal({
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
-    // Validaciones básicas
     if (!formData.nombre.trim()) newErrors.nombre = "El nombre del proyecto es requerido";
     if (!formData.fecha_inicio) newErrors.fecha_inicio = "La fecha de inicio es requerida";
     
-    // Validaciones para creación
     if (!proyecto) {
       if (!formData.nombre_ciudad.trim()) newErrors.ciudad = "La ciudad es requerida";
       if (!formData.departamento.trim()) newErrors.departamento = "El departamento es requerido";
@@ -326,7 +318,6 @@ export default function CreateProjectModal({
       if (!formData.direccion_cliente.trim()) newErrors.direccion_cliente = "La dirección del cliente es requerida";
     }
 
-    // Validaciones para ambos casos
     if (equipo.length === 0) {
       newErrors.equipo = "Debe haber al menos un miembro en el equipo";
     } else {
@@ -340,7 +331,6 @@ export default function CreateProjectModal({
       newErrors.materiales = "Debe haber al menos un material";
     }
 
-    // Validar fechas
     if (formData.fecha_fin && formData.fecha_inicio > formData.fecha_fin) {
       newErrors.fecha_fin = "La fecha de fin no puede ser anterior a la fecha de inicio";
     }
@@ -356,7 +346,6 @@ export default function CreateProjectModal({
       [name]: value,
     }));
     
-    // Limpiar error del campo cuando el usuario empiece a escribir
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -380,27 +369,45 @@ export default function CreateProjectModal({
       let payload: any;
 
       if (proyecto) {
-        // EDITAR - Usar IDs existentes
+        // 🔥 CORRECCIÓN CRÍTICA: Payload completo para edición
         payload = {
           nombre: formData.nombre.trim(),
           descripcion: formData.descripcion.trim(),
           id_ciudad: formData.id_ciudad,
           id_cliente: formData.id_cliente,
+          // 🔥 AÑADIR CAMPOS FALTANTES:
+          nombre_ciudad: formData.nombre_ciudad.trim(),
+          departamento: formData.departamento.trim(),
+          nombre_cliente: formData.nombre_cliente.trim(),
+          email_cliente: formData.email_cliente.trim(),
+          telefono_cliente: formData.telefono_cliente.trim(),
+          direccion_cliente: formData.direccion_cliente.trim(),
           fecha_inicio: formData.fecha_inicio,
           fecha_fin: formData.fecha_fin || null,
           estado: formData.estado,
           presupuesto: presupuestoNum,
-          equipo: equipo,
-          materiales: formData.materiales
+          // 🔥 CORREGIR ESTRUCTURA DE EQUIPO Y MATERIALES:
+          equipo: equipo.map(member => ({
+            id_usuario: member.id_usuario,
+            id_estado: member.id_estado || 1,
+            rol: member.rol.trim()
+          })),
+          materiales: formData.materiales.map(mat => ({
+            id_material: mat.id_material,
+            cantidad: Number(mat.cantidad),
+            unidad: mat.unidad,
+            costo_unitario: Number(mat.costo_unitario),
+            nombre_etapa: mat.nombre_etapa || null
+          }))
         };
       } else {
-        // CREAR - ESTRUCTURA CORREGIDA: CAMPOS PLANOS como espera el backend
+        // CREAR - Mantener igual
         payload = {
           nombre: formData.nombre.trim(),
           descripcion: formData.descripcion.trim(),
-          nombre_ciudad: formData.nombre_ciudad.trim(), // Campo plano
-          departamento: formData.departamento.trim(),   // Campo plano
-          nombre_cliente: formData.nombre_cliente.trim(), // Campo plano
+          nombre_ciudad: formData.nombre_ciudad.trim(),
+          departamento: formData.departamento.trim(),
+          nombre_cliente: formData.nombre_cliente.trim(),
           email_cliente: formData.email_cliente.trim(),
           telefono_cliente: formData.telefono_cliente.trim(),
           direccion_cliente: formData.direccion_cliente.trim(),
@@ -427,7 +434,6 @@ export default function CreateProjectModal({
       
       await onCreate(payload);
       
-      // 🔥 MODIFICADO: Mostrar modal de éxito en lugar de alert
       setSuccessModal({
         isOpen: true,
         title: "¡Éxito!",
@@ -441,7 +447,6 @@ export default function CreateProjectModal({
       console.error("Error al crear/editar proyecto:", err);
       const errorMessage = err.response?.data?.message || err.message || "Error desconocido al procesar el proyecto";
       
-      // 🔥 MODIFICADO: Mostrar modal de error en lugar de alert
       setErrorModal({
         isOpen: true,
         title: "Error",
@@ -469,7 +474,6 @@ export default function CreateProjectModal({
     <>
       <div className="fixed inset-0 bg-gray-600 bg-opacity-50 z-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[95vh] overflow-hidden flex flex-col">
-          {/* Header */}
           <div className="bg-gradient-to-r from-blue-600 to-blue-800 px-6 py-4">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-bold text-white">
@@ -484,10 +488,8 @@ export default function CreateProjectModal({
             </div>
           </div>
 
-          {/* Form Content */}
           <div className="flex-1 overflow-y-auto p-6">
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Detalles del Proyecto */}
               <div className="grid grid-cols-2 gap-4">
                 <h3 className={sectionTitleCss}>Detalles del Proyecto</h3>
                 
@@ -522,7 +524,6 @@ export default function CreateProjectModal({
                 )}
               </div>
 
-              {/* Información del Cliente */}
               <div className="grid grid-cols-2 gap-4">
                 <h3 className={sectionTitleCss}>Información del Cliente</h3>
                 
@@ -609,7 +610,6 @@ export default function CreateProjectModal({
                 )}
               </div>
 
-              {/* Ubicación */}
               <div className="grid grid-cols-2 gap-4">
                 <h3 className={sectionTitleCss}>Ubicación</h3>
                 
@@ -690,7 +690,6 @@ export default function CreateProjectModal({
                 </div>
               </div>
 
-              {/* Materiales */}
               <div className="grid grid-cols-1 gap-4">
                 <h3 className={sectionTitleCss}>Materiales *</h3>
                 
@@ -701,12 +700,9 @@ export default function CreateProjectModal({
                     getOptionLabel={(option) => option.nombre}
                     value={materials.filter((m) => {
                       const estaSeleccionado = formData.materiales.some((fm) => fm.id_material === m.id);
-                      console.log(`🔍 Material ${m.id} (${m.nombre}): ${estaSeleccionado ? 'SELECCIONADO' : 'no seleccionado'}`);
                       return estaSeleccionado;
                     })}
                     onChange={(_, newValue) => {
-                      console.log("🎯 Materiales seleccionados en Autocomplete:", newValue.map(m => ({id: m.id, nombre: m.nombre})));
-                      
                       setFormData((prev) => ({
                         ...prev,
                         materiales: newValue.map((m) => {
@@ -718,13 +714,9 @@ export default function CreateProjectModal({
                             costo_unitario: m.precio_unitario || 0,
                             nombre_etapa: ""
                           };
-                          
-                          console.log("➕ Material procesado:", nuevoMaterial);
                           return nuevoMaterial;
                         })
                       }));
-                      
-                      console.log("📦 Estado final de materiales:", newValue.map(m => ({id: m.id, nombre: m.nombre})));
                     }}
                     renderTags={(value, getTagProps) =>
                       value.map((option, index) => {
@@ -754,8 +746,6 @@ export default function CreateProjectModal({
                       </div>
                       {formData.materiales.map((mat, idx) => {
                         const material = materials.find(m => m.id === mat.id_material);
-                        console.log(`📋 Renderizando material ${idx}:`, {id: mat.id_material, nombre: material?.nombre, cantidad: mat.cantidad});
-                        
                         return (
                           <div key={idx} className="grid grid-cols-6 gap-3 mb-3 items-center">
                             <span className="col-span-2 font-medium">{material?.nombre}</span>
@@ -826,7 +816,6 @@ export default function CreateProjectModal({
                 </div>
               </div>
 
-              {/* Fechas y Presupuesto */}
               <div className="grid grid-cols-3 gap-4">
                 <h3 className={sectionTitleCss}>Planificación</h3>
                 
@@ -869,7 +858,6 @@ export default function CreateProjectModal({
                 </div>
               </div>
 
-              {/* Equipo del Proyecto */}
               <div className="grid grid-cols-1 gap-4">
                 <h3 className={sectionTitleCss}>Equipo del Proyecto *</h3>
                 
@@ -945,7 +933,6 @@ export default function CreateProjectModal({
                 </div>
               </div>
 
-              {/* Errores generales */}
               {errors.submit && (
                 <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                   <div className="flex items-center">
@@ -955,7 +942,6 @@ export default function CreateProjectModal({
                 </div>
               )}
 
-              {/* Botones de acción */}
               <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
                 <button
                   type="button"
@@ -987,7 +973,6 @@ export default function CreateProjectModal({
         </div>
       </div>
 
-      {/* 🔥 NUEVO: Modales personalizados */}
       <ConfirmModal
         isOpen={confirmModal.isOpen}
         onClose={() => setConfirmModal({ ...confirmModal, isOpen: false })}

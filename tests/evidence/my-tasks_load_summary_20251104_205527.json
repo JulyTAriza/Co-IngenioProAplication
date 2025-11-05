@@ -1,0 +1,17 @@
+{
+  "endpoint": "/my-tasks",
+  "test_timestamp": "2025-11-04T20:55:27.136885",
+  "results": [
+    {
+      "threads": 5,
+      "total_requests": 5,
+      "successful_requests": 0,
+      "failed_requests": 5,
+      "failure_rate": 100.0,
+      "avg_response_time": 1.001798152923584,
+      "max_response_time": 1.1892938613891602,
+      "min_response_time": 0.8267216682434082,
+      "total_test_time": 1.1920742988586426
+    }
+  ]
+}

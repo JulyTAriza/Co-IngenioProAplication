@@ -1,0 +1,32 @@
+[
+  {
+    "url": "https://co-ingenioproaplication-backend.onrender.com/usuarios",
+    "status_code": 401,
+    "success": false,
+    "response_time": 0.178385
+  },
+  {
+    "url": "https://co-ingenioproaplication-backend.onrender.com/usuarios",
+    "status_code": 401,
+    "success": false,
+    "response_time": 0.179716
+  },
+  {
+    "url": "https://co-ingenioproaplication-backend.onrender.com/usuarios",
+    "status_code": 401,
+    "success": false,
+    "response_time": 0.208563
+  },
+  {
+    "url": "https://co-ingenioproaplication-backend.onrender.com/usuarios",
+    "status_code": 401,
+    "success": false,
+    "response_time": 0.180211
+  },
+  {
+    "url": "https://co-ingenioproaplication-backend.onrender.com/usuarios",
+    "status_code": 401,
+    "success": false,
+    "response_time": 0.169786
+  }
+]

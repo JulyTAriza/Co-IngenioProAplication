@@ -1,0 +1,59 @@
+{
+  "test_config": {
+    "endpoint": "/etapas",
+    "threads": 5,
+    "timestamp": "2025-11-04T20:55:15.595309"
+  },
+  "metrics": {
+    "total_requests": 5,
+    "successful_requests": 0,
+    "failed_requests": 5,
+    "failure_rate": 100.0,
+    "avg_response_time": 0.38329763412475587,
+    "max_response_time": 0.5437250137329102,
+    "min_response_time": 0.3346412181854248,
+    "total_test_time": 0.5500242710113525
+  },
+  "detailed_results": [
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/etapas",
+      "status_code": 404,
+      "success": false,
+      "response_time": 0.3346412181854248,
+      "response_size": 207,
+      "timestamp": "2025-11-04T20:55:15.389733"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/etapas",
+      "status_code": 404,
+      "success": false,
+      "response_time": 0.3477358818054199,
+      "response_size": 207,
+      "timestamp": "2025-11-04T20:55:15.390620"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/etapas",
+      "status_code": 404,
+      "success": false,
+      "response_time": 0.3425936698913574,
+      "response_size": 207,
+      "timestamp": "2025-11-04T20:55:15.393009"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/etapas",
+      "status_code": 404,
+      "success": false,
+      "response_time": 0.347792387008667,
+      "response_size": 207,
+      "timestamp": "2025-11-04T20:55:15.395920"
+    },
+    {
+      "url": "https://co-ingenioproaplication-backend.onrender.com/etapas",
+      "status_code": 404,
+      "success": false,
+      "response_time": 0.5437250137329102,
+      "response_size": 207,
+      "timestamp": "2025-11-04T20:55:15.589845"
+    }
+  ]
+}

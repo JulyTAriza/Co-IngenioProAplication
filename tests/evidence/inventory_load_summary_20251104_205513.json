@@ -1,0 +1,17 @@
+{
+  "endpoint": "/inventory",
+  "test_timestamp": "2025-11-04T20:55:13.036321",
+  "results": [
+    {
+      "threads": 5,
+      "total_requests": 5,
+      "successful_requests": 0,
+      "failed_requests": 5,
+      "failure_rate": 100.0,
+      "avg_response_time": 0.36966843605041505,
+      "max_response_time": 0.5150995254516602,
+      "min_response_time": 0.3159041404724121,
+      "total_test_time": 0.5234065055847168
+    }
+  ]
+}

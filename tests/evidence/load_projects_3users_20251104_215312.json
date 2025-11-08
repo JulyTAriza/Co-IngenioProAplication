@@ -1,0 +1,72 @@
+{
+  "test_config": {
+    "endpoint": "/projects/",
+    "concurrent_users": 3,
+    "token_strategy": "individual_per_request",
+    "timestamp": "2025-11-04T21:53:12.129014",
+    "base_url": "https://co-ingenioproaplication-backend.onrender.com"
+  },
+  "metrics": {
+    "total_requests": 3,
+    "successful_requests": 3,
+    "failed_requests": 0,
+    "success_rate": 100.0,
+    "failure_rate": 0.0,
+    "avg_response_time": 2.28527037302653,
+    "min_response_time": 2.1818132400512695,
+    "max_response_time": 2.4799423217773438,
+    "p50_response_time": 2.1940555572509766,
+    "p90_response_time": 2.4799423217773438,
+    "p95_response_time": 2.4799423217773438,
+    "p99_response_time": 2.4799423217773438,
+    "total_test_time": 7.964991092681885,
+    "requests_per_second": 0.3766482554834688
+  },
+  "detailed_results": [
+    {
+      "endpoint": "/projects/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/projects/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 2.4799423217773438,
+      "response_size": 1443,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:53:11.149055",
+      "data_keys": [
+        "data",
+        "success"
+      ],
+      "data_count": 3
+    },
+    {
+      "endpoint": "/projects/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/projects/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 2.1940555572509766,
+      "response_size": 1443,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:53:11.940406",
+      "data_keys": [
+        "data",
+        "success"
+      ],
+      "data_count": 3
+    },
+    {
+      "endpoint": "/projects/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/projects/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 2.1818132400512695,
+      "response_size": 1443,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:53:12.125425",
+      "data_keys": [
+        "data",
+        "success"
+      ],
+      "data_count": 3
+    }
+  ]
+}

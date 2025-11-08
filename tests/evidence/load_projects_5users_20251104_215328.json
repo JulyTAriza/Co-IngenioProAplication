@@ -1,0 +1,93 @@
+{
+  "test_config": {
+    "endpoint": "/projects/",
+    "concurrent_users": 5,
+    "token_strategy": "individual_per_request",
+    "timestamp": "2025-11-04T21:53:28.290536",
+    "base_url": "https://co-ingenioproaplication-backend.onrender.com"
+  },
+  "metrics": {
+    "total_requests": 5,
+    "successful_requests": 4,
+    "failed_requests": 1,
+    "success_rate": 80.0,
+    "failure_rate": 20.0,
+    "avg_response_time": 1.549656581878662,
+    "min_response_time": 1.6278979778289795,
+    "max_response_time": 2.6182854175567627,
+    "p50_response_time": 1.7657949924468994,
+    "p90_response_time": 2.6182854175567627,
+    "p95_response_time": 2.6182854175567627,
+    "p99_response_time": 2.6182854175567627,
+    "total_test_time": 11.1561279296875,
+    "requests_per_second": 0.44818417568469543
+  },
+  "detailed_results": [
+    {
+      "endpoint": "/projects/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/projects/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 1.6278979778289795,
+      "response_size": 1443,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:53:27.000824",
+      "data_keys": [
+        "data",
+        "success"
+      ],
+      "data_count": 3
+    },
+    {
+      "endpoint": "/projects/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/projects/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 1.736304521560669,
+      "response_size": 1443,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:53:27.001006",
+      "data_keys": [
+        "data",
+        "success"
+      ],
+      "data_count": 3
+    },
+    {
+      "endpoint": "/projects/",
+      "success": false,
+      "error": "No se pudo obtener token",
+      "timestamp": "2025-11-04T21:53:27.375839"
+    },
+    {
+      "endpoint": "/projects/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/projects/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 1.7657949924468994,
+      "response_size": 1443,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:53:27.528586",
+      "data_keys": [
+        "data",
+        "success"
+      ],
+      "data_count": 3
+    },
+    {
+      "endpoint": "/projects/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/projects/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 2.6182854175567627,
+      "response_size": 1443,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:53:28.288056",
+      "data_keys": [
+        "data",
+        "success"
+      ],
+      "data_count": 3
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "test_config": {
+    "endpoint": "/usuarios/",
+    "concurrent_users": 8,
+    "token_strategy": "individual_per_request",
+    "timestamp": "2025-11-04T21:56:33.999667",
+    "base_url": "https://co-ingenioproaplication-backend.onrender.com"
+  },
+  "metrics": {
+    "total_requests": 8,
+    "successful_requests": 3,
+    "failed_requests": 5,
+    "success_rate": 37.5,
+    "failure_rate": 62.5,
+    "avg_response_time": 2.454722076654434,
+    "min_response_time": 5.022599935531616,
+    "max_response_time": 7.626430511474609,
+    "p50_response_time": 6.988746166229248,
+    "p90_response_time": 7.626430511474609,
+    "p95_response_time": 7.626430511474609,
+    "p99_response_time": 7.626430511474609,
+    "total_test_time": 15.113585948944092,
+    "requests_per_second": 0.5293250739450699
+  },
+  "detailed_results": [
+    {
+      "endpoint": "/usuarios/",
+      "success": false,
+      "error": "No se pudo obtener token",
+      "timestamp": "2025-11-04T21:56:29.135097"
+    },
+    {
+      "endpoint": "/usuarios/",
+      "success": false,
+      "error": "No se pudo obtener token",
+      "timestamp": "2025-11-04T21:56:29.187782"
+    },
+    {
+      "endpoint": "/usuarios/",
+      "success": false,
+      "error": "No se pudo obtener token",
+      "timestamp": "2025-11-04T21:56:29.188376"
+    },
+    {
+      "endpoint": "/usuarios/",
+      "success": false,
+      "error": "No se pudo obtener token",
+      "timestamp": "2025-11-04T21:56:29.189528"
+    },
+    {
+      "endpoint": "/usuarios/",
+      "success": false,
+      "error": "No se pudo obtener token",
+      "timestamp": "2025-11-04T21:56:29.190827"
+    },
+    {
+      "endpoint": "/usuarios/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/usuarios/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 7.626430511474609,
+      "response_size": 452,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:56:33.162889",
+      "data_keys": [
+        "data",
+        "success"
+      ],
+      "data_count": 5
+    },
+    {
+      "endpoint": "/usuarios/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/usuarios/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 6.988746166229248,
+      "response_size": 452,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:56:33.163862",
+      "data_keys": [
+        "data",
+        "success"
+      ],
+      "data_count": 5
+    },
+    {
+      "endpoint": "/usuarios/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/usuarios/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 5.022599935531616,
+      "response_size": 452,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:56:33.992731",
+      "data_keys": [
+        "data",
+        "success"
+      ],
+      "data_count": 5
+    }
+  ]
+}

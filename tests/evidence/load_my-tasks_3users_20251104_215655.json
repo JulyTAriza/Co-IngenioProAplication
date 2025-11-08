@@ -1,0 +1,69 @@
+{
+  "test_config": {
+    "endpoint": "/my-tasks/",
+    "concurrent_users": 3,
+    "token_strategy": "individual_per_request",
+    "timestamp": "2025-11-04T21:56:55.236905",
+    "base_url": "https://co-ingenioproaplication-backend.onrender.com"
+  },
+  "metrics": {
+    "total_requests": 3,
+    "successful_requests": 3,
+    "failed_requests": 0,
+    "success_rate": 100.0,
+    "failure_rate": 0.0,
+    "avg_response_time": 1.463932196299235,
+    "min_response_time": 0.987799882888794,
+    "max_response_time": 2.3388724327087402,
+    "p50_response_time": 1.065124273300171,
+    "p90_response_time": 2.3388724327087402,
+    "p95_response_time": 2.3388724327087402,
+    "p99_response_time": 2.3388724327087402,
+    "total_test_time": 6.733052730560303,
+    "requests_per_second": 0.4455631227100682
+  },
+  "detailed_results": [
+    {
+      "endpoint": "/my-tasks/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/my-tasks/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 2.3388724327087402,
+      "response_size": 1959,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:56:54.110542",
+      "data_keys": [
+        "data",
+        "success"
+      ]
+    },
+    {
+      "endpoint": "/my-tasks/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/my-tasks/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 1.065124273300171,
+      "response_size": 1959,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:56:55.208928",
+      "data_keys": [
+        "data",
+        "success"
+      ]
+    },
+    {
+      "endpoint": "/my-tasks/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/my-tasks/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 0.987799882888794,
+      "response_size": 1959,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:56:55.232605",
+      "data_keys": [
+        "data",
+        "success"
+      ]
+    }
+  ]
+}

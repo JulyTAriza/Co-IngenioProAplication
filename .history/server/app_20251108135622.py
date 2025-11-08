@@ -41,13 +41,6 @@ app.config['MAIL_DEFAULT_SENDER'] = os.getenv("MAIL_DEFAULT_SENDER")
 
 mail = mail(app)
 redis_client.init_app(app)
-
-try:
-    redis_client.set("test_connection", "ok", ex=5)
-    print("✅ Redis conectado correctamente.")
-except Exception as e:
-    print("❌ Error conectando a Redis:", e)
-
 # -------------------------
 # Scheduler para revisar notificaciones críticas
 # -------------------------

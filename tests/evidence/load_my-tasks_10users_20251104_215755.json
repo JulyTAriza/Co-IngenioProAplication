@@ -1,0 +1,119 @@
+{
+  "test_config": {
+    "endpoint": "/my-tasks/",
+    "concurrent_users": 10,
+    "token_strategy": "individual_per_request",
+    "timestamp": "2025-11-04T21:57:55.208225",
+    "base_url": "https://co-ingenioproaplication-backend.onrender.com"
+  },
+  "metrics": {
+    "total_requests": 10,
+    "successful_requests": 4,
+    "failed_requests": 6,
+    "success_rate": 40.0,
+    "failure_rate": 60.0,
+    "avg_response_time": 3.3520792007446287,
+    "min_response_time": 7.716125965118408,
+    "max_response_time": 8.861073017120361,
+    "p50_response_time": 8.638243198394775,
+    "p90_response_time": 8.861073017120361,
+    "p95_response_time": 8.861073017120361,
+    "p99_response_time": 8.861073017120361,
+    "total_test_time": 18.018453359603882,
+    "requests_per_second": 0.5549865907147893
+  },
+  "detailed_results": [
+    {
+      "endpoint": "/my-tasks/",
+      "success": false,
+      "error": "No se pudo obtener token",
+      "timestamp": "2025-11-04T21:57:47.461585"
+    },
+    {
+      "endpoint": "/my-tasks/",
+      "success": false,
+      "error": "No se pudo obtener token",
+      "timestamp": "2025-11-04T21:57:47.464632"
+    },
+    {
+      "endpoint": "/my-tasks/",
+      "success": false,
+      "error": "No se pudo obtener token",
+      "timestamp": "2025-11-04T21:57:47.465088"
+    },
+    {
+      "endpoint": "/my-tasks/",
+      "success": false,
+      "error": "No se pudo obtener token",
+      "timestamp": "2025-11-04T21:57:47.479095"
+    },
+    {
+      "endpoint": "/my-tasks/",
+      "success": false,
+      "error": "No se pudo obtener token",
+      "timestamp": "2025-11-04T21:57:47.488270"
+    },
+    {
+      "endpoint": "/my-tasks/",
+      "success": false,
+      "error": "No se pudo obtener token",
+      "timestamp": "2025-11-04T21:57:47.488647"
+    },
+    {
+      "endpoint": "/my-tasks/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/my-tasks/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 7.716125965118408,
+      "response_size": 1959,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:57:53.178948",
+      "data_keys": [
+        "data",
+        "success"
+      ]
+    },
+    {
+      "endpoint": "/my-tasks/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/my-tasks/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 8.305349826812744,
+      "response_size": 1959,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:57:54.075724",
+      "data_keys": [
+        "data",
+        "success"
+      ]
+    },
+    {
+      "endpoint": "/my-tasks/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/my-tasks/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 8.638243198394775,
+      "response_size": 1959,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:57:54.077384",
+      "data_keys": [
+        "data",
+        "success"
+      ]
+    },
+    {
+      "endpoint": "/my-tasks/",
+      "url": "https://co-ingenioproaplication-backend.onrender.com/my-tasks/",
+      "status_code": 200,
+      "success": true,
+      "response_time": 8.861073017120361,
+      "response_size": 1959,
+      "has_valid_json": true,
+      "timestamp": "2025-11-04T21:57:55.202940",
+      "data_keys": [
+        "data",
+        "success"
+      ]
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify
 from flask_cors import CORS
 from extensions import Mail, redis_client
 from dotenv import load_dotenv
@@ -107,10 +107,8 @@ def health_check():
     return {'status': 'healthy', 'message': 'Backend funcionando'}, 200
 
 # -------------------------
-# CONFIGURACIÓN CORS MEJORADA
+# CORS (Next.js y Render)
 # -------------------------
-
-# Configuración principal de CORS
 CORS(
     app,
     resources={r"/*": {
@@ -134,42 +132,8 @@ CORS(
         "max_age": 600  # Cache preflight por 10 minutos
     }}
 )
+logger.info("🌐 CORS configurado correctamente.")
 
-# Manejo explícito de preflight OPTIONS
-@app.before_request
-def handle_preflight():
-    if request.method == "OPTIONS":
-        response = jsonify({"status": "preflight"})
-        response.headers.add("Access-Control-Allow-Origin", request.headers.get("Origin", "*"))
-        response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization,X-Requested-With")
-        response.headers.add("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS,PATCH")
-        response.headers.add("Access-Control-Allow-Credentials", "true")
-        return response, 200
-
-# Headers CORS para todas las respuestas
-@app.after_request
-def after_request(response):
-    origin = request.headers.get('Origin')
-    allowed_origins = [
-        "http://localhost:3000",
-        "http://127.0.0.1:3000", 
-        "https://co-ingeniopro.up.railway.app",
-        "https://co-ingenioproaplication-frontend.onrender.com"
-    ]
-    
-    if origin in allowed_origins:
-        response.headers.add('Access-Control-Allow-Origin', origin)
-    else:
-        # Para requests sin Origin header (como curl)
-        response.headers.add('Access-Control-Allow-Origin', '*')
-    
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,X-Requested-With')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS,PATCH')
-    response.headers.add('Access-Control-Allow-Credentials', 'true')
-    response.headers.add('Access-Control-Max-Age', '600')
-    return response
-
-logger.info("🌐 CORS configurado correctamente con manejo explícito de preflight.")
 
 # -------------------------
 # Registrar Blueprints
@@ -195,19 +159,6 @@ except Exception as e:
     traceback.print_exc()
 
 # -------------------------
-# Ruta específica para manejar preflight del login
-# -------------------------
-@app.route('/login', methods=['OPTIONS'])
-@app.route('/api/login', methods=['OPTIONS'])
-def login_preflight():
-    response = jsonify({"status": "preflight_login"})
-    response.headers.add("Access-Control-Allow-Origin", request.headers.get("Origin", "*"))
-    response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization")
-    response.headers.add("Access-Control-Allow-Methods", "POST,OPTIONS")
-    response.headers.add("Access-Control-Allow-Credentials", "true")
-    return response, 200
-
-# -------------------------
 # Manejo Global de Errores
 # -------------------------
 @app.errorhandler(Exception)
@@ -220,7 +171,7 @@ def handle_exception(e):
 # Lanzamiento del servidor
 # -------------------------
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 10000))
+    port = 10000
     if os.environ.get('RENDER'):
         from waitress import serve
         logger.info(f"🚀 Iniciando servidor en modo Render (Waitress) en puerto {port}")

@@ -49,7 +49,7 @@ def check_critical_notifications():
         print("Revisando notificaciones críticas...")
         
         # En producción, llamar directamente a la función sin HTTP
-        if os.environ.get('RENDER') or os.environ.get('RAILWAY'):
+        if os.environ.get('RENDER'):
             from modules.notifications.routes import check_critical_notifications_logic
             check_critical_notifications_logic()
         else:
@@ -100,13 +100,9 @@ app.register_blueprint(auth_bp, url_prefix='/auth')
 app.register_blueprint(etapas_proyecto_bp, url_prefix="/etapas")
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 10000))
-    
-    # Usar servidor de producción en Railway O Render
-    if os.environ.get('RAILWAY') or os.environ.get('RENDER'):
+    port = 10000
+    if os.environ.get('RENDER'):
         from waitress import serve
-        print(f"🚀 Servidor producción iniciado en puerto {port}")
         serve(app, host='0.0.0.0', port=port)
     else:
-        print(f"🔧 Servidor desarrollo iniciado en puerto {port}")
         app.run(debug=False, host='0.0.0.0', port=port)

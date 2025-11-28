@@ -8,13 +8,22 @@ import { Provider } from "react-redux";
 import store from "./import"; // aquí ahora apunta a tu Import.tsx
 
 const inter = Inter({ subsets: ["latin"] });
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isAuthPage = pathname === "/login" || pathname === "/register";
+  const isAuthPage = 
+    pathname === "/login" || 
+    pathname === "/register" || 
+    pathname === "/forgot" || 
+    pathname === "/verification" || 
+    pathname === "/new-password";
 
   return (
     <html lang="en">
+      <head>
+        <title>Co-IngenioPro</title>
+        <link rel="icon" href="/assets/favicon.ico" />
+      </head>
+
       <body className={inter.className}>
         <Provider store={store}>
           {isAuthPage ? (

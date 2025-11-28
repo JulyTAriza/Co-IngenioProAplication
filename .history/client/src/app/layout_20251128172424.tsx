@@ -19,11 +19,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang="en">
-      <head>
-        <title>Co-IngenioPro</title>
-        <link rel="icon" href="/assets/favicon.ico" />
-      </head>
-
       <body className={inter.className}>
         <Provider store={store}>
           {isAuthPage ? (

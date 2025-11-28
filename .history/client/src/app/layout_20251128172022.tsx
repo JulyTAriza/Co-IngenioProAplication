@@ -1,3 +1,5 @@
+import { metadata } from "./metadata";
+
 "use client";
 
 import { Inter } from "next/font/google";
@@ -8,6 +10,7 @@ import { Provider } from "react-redux";
 import store from "./import"; // aquí ahora apunta a tu Import.tsx
 
 const inter = Inter({ subsets: ["latin"] });
+export { metadata };
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isAuthPage = 
@@ -19,11 +22,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang="en">
-      <head>
-        <title>Co-IngenioPro</title>
-        <link rel="icon" href="/assets/favicon.ico" />
-      </head>
-
       <body className={inter.className}>
         <Provider store={store}>
           {isAuthPage ? (
